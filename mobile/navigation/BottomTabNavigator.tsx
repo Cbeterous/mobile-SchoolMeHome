@@ -1,13 +1,16 @@
 import { Ionicons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
+import ProfilScreen from '../screens/ProfilScreen';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
-import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
+import TakePicture from '../screens/TakePicture';
+import { BottomTabParamList, ProfilParamList, TabOneParamList, TabTwoParamList } from '../types';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -16,20 +19,13 @@ export default function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
-      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
+      initialRouteName="Profil"
+      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint, style: {backgroundColor: Colors[colorScheme].background} }}>
       <BottomTab.Screen
-        name="TabOne"
-        component={TabOneNavigator}
+        name="Profil"
+        component={ProfilNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
-        }}
-      />
-      <BottomTab.Screen
-        name="TabTwo"
-        component={TabTwoNavigator}
-        options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+          tabBarIcon: ({ color }) => <AntDesign name="user" size={24} color={color} />
         }}
       />
     </BottomTab.Navigator>
@@ -70,4 +66,24 @@ function TabTwoNavigator() {
       />
     </TabTwoStack.Navigator>
   );
+}
+
+const ProfilStack = createStackNavigator<ProfilParamList>();
+
+function ProfilNavigator() {
+  return (
+    <ProfilStack.Navigator screenOptions={{
+      headerStyle: {
+        backgroundColor:'#30475e', 
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+        textTransform: 'capitalize',
+      }
+    }} >
+      <ProfilStack.Screen name="ProfilScreen" component={ProfilScreen} options={{ headerTitle: 'Mon profil'}} />
+      <ProfilStack.Screen name="TakePicture" component={TakePicture} options={{ headerTitle: 'Photo de profil'}} />
+    </ProfilStack.Navigator>
+  )
 }
