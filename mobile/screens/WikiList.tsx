@@ -45,7 +45,7 @@ export default class WikiList extends Component {
 
 
     renderItem = ({item}: any) => (
-        <TouchableOpacity onPress={() => this.props.navigation.navigate('Detail', {
+        <TouchableOpacity onPress={() => navigate('Detail', {
             id: item.key
         })}>
             <Item title={item.title}/>
