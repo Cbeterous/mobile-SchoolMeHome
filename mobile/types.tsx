@@ -7,6 +7,7 @@ export type BottomTabParamList = {
   TabOne: undefined;
   TabTwo: undefined;
   Wiki: undefined;
+  Detail: undefined;
 };
 
 export type TabOneParamList = {
