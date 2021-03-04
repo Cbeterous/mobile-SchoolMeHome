@@ -7,7 +7,9 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
-import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
+import {BottomTabParamList, ProfilParamList, TabOneParamList, TabTwoParamList} from '../types';
+import WikiList from "../screens/WikiList";
+import WikiDetail from "../screens/WikiDetail";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -72,8 +74,22 @@ function TabTwoNavigator() {
   );
 }
 
+const WikiStack = createStackNavigator<WikiParamList>();
+
 function WikiNavigator() {
     return (
-        <
+        <WikiStack.Navigator screenOptions={{
+            headerStyle: {
+                backgroundColor:'#30475e',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                fontWeight: 'bold',
+                textTransform: 'capitalize',
+            }
+        }} >
+            <WikiStack.Screen name="Wiki" component={WikiList} options={{ headerTitle: 'Mon Wiki'}} />
+            <WikiStack.Screen name="WikiDetail" component={WikiDetail} options={{ headerTitle: 'Detail'}} />
+        </WikiStack.Navigator>
     )
 }
