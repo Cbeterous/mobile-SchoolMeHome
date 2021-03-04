@@ -4,7 +4,6 @@ import { Text, View } from '../components/Themed';
 import { FontAwesome } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { Avatar, Card, ListItem } from 'react-native-elements';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import * as ImagePicker from 'expo-image-picker';
 
@@ -71,14 +70,21 @@ const takeImage = async () => {
                     },
                     draggableIcon: {
                       backgroundColor: "#f05454"
+                    },
+                    container :{
+                      backgroundColor: '#30475e'
                     }
                   }}
                 >
-                  <ListItem onPress={pickImage}>
-                    <ListItem.Content><ListItem.Title>Choisir une photo de la gallerie</ListItem.Title></ListItem.Content>
+                  <ListItem onPress={pickImage} containerStyle={{ backgroundColor:'#30475e' }}>
+                    <ListItem.Content>
+                      <ListItem.Title style={styles.whiteText}>Choisir une photo de la gallerie</ListItem.Title>
+                    </ListItem.Content>
                   </ListItem>
-                  <ListItem onPress={takeImage}>
-                    <ListItem.Content><ListItem.Title>Prendre une photo</ListItem.Title></ListItem.Content>
+                  <ListItem onPress={takeImage} containerStyle={{ backgroundColor:'#30475e' }}>
+                    <ListItem.Content>
+                      <ListItem.Title style={styles.whiteText}>Prendre une photo</ListItem.Title>
+                    </ListItem.Content>
                   </ListItem>
                 </RBSheet>
                 <Text style={styles.title}>Maxime BERTHOLD</Text>
