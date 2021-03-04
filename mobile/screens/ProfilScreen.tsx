@@ -1,20 +1,29 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ImageBackground, ScrollView, Image, StyleSheet } from 'react-native';
 import { Text, View } from '../components/Themed';
 import { FontAwesome } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { Avatar, Card, ListItem } from 'react-native-elements';
-import Navigation from '../navigation';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function ProfilScreen({navigation} : any) {
 
-  
+  const [avatar, setAvatar] = useState("https://randomuser.me/api/portraits/men/75.jpg");
+
+  useEffect(() => {
+    (async () => {
+        const img = await AsyncStorage.getItem('@profil_smh');
+        console.log(img);
+        if(img) setAvatar(img);
+    })();
+}, []);
+
 
   return (
     <View style={styles.container}>
         <ImageBackground source={require('../assets/images/profilBG.png')} style={styles.imageBG}>
             <ScrollView >
-                <Avatar containerStyle={{ alignSelf: 'center'}} rounded source={{ uri : "https://randomuser.me/api/portraits/men/75.jpg"}} size='xlarge'>
+                <Avatar containerStyle={{ alignSelf: 'center'}} rounded source={{ uri : avatar}} size='xlarge'>
                   <Avatar.Accessory style={{backgroundColor: "#f05454"}} size={36} onPress={() => navigation.navigate('TakePicture')}/>
                 </Avatar>
                 <Text style={styles.title}>Maxime BERTHOLD</Text>

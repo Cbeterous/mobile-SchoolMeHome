@@ -20,4 +20,5 @@ export type TabTwoParamList = {
 export type ProfilParamList = {
   ProfilScreen: undefined;
   TakePicture: undefined;
+  ShowPicture: undefined;
 }

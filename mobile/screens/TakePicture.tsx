@@ -2,8 +2,10 @@ import { Camera } from "expo-camera";
 import React, { useEffect, useRef, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
+import * as ImageManipulator from 'expo-image-manipulator';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default function TakePicture () {
+export default function TakePicture ({navigation} : any) {
     const [hasPermission, setHasPermission] = useState<null | boolean>(null);
     const [type, setType] = useState(Camera.Constants.Type.back);
     const camera = useRef<Camera>(null);
@@ -25,13 +27,17 @@ export default function TakePicture () {
     const snap = async () => {
         if (camera.current) {
             try {
-            let photo = await camera.current.takePictureAsync();
-            console.log(photo);
-            // console.log(
-            //     await ImageManipulator.manipulateAsync(photo.uri, [
-            //       { resize: { height: 400 } },
-            //     ])
-            //   );
+                let photo = await camera.current.takePictureAsync({quality: 1});
+                console.log(photo);
+                
+                ( async () => {
+                    try {
+                        await AsyncStorage.setItem('@picture_smh', photo.uri);
+                        navigation.navigate('ShowPicture');
+                    } catch (e) {
+                        console.log(e);
+                    }
+                })();
             } catch (err) {
             console.log(err);
             }
