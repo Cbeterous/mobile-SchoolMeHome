@@ -35,32 +35,23 @@ const Item = ({title}: any) => (
 );
 
 
-export default class WikiList extends Component {
-
-    static navigationOptions = ({navigation}: any) => ({
-        title: 'Home',
-        headerTitleStyle: {textAlign: 'center', alignSelf: 'center'},
-        headerStyle: {backgroundColor: 'powderblue'},
-    })
+export default function WikiList({navigation}: any) {
 
 
-    renderItem = ({item}: any) => (
-        <TouchableOpacity onPress={() => navigate('Detail', {
+    const renderItem = ({item}: any) => (
+        <TouchableOpacity onPress={() => navigation.replace('Detail', {
             id: item.key
         })}>
             <Item title={item.title}/>
         </TouchableOpacity>
     );
-
-    render() {
-        return (
-            <FlatList style={styles.container}
-                      data={DATA}
-                      renderItem={this.renderItem}
-                      keyExtractor={item => item.id}
-            />
-        )
-    }
+    return (
+        <FlatList style={styles.container}
+                  data={DATA}
+                  renderItem={renderItem}
+                  keyExtractor={item => item.id}
+        />
+    )
 
 }
 
