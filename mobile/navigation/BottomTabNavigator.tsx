@@ -7,10 +7,10 @@ import * as React from 'react';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import ProfilScreen from '../screens/ProfilScreen';
-import ShowPicture from '../screens/ShowPicture';
+
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
-import TakePicture from '../screens/TakePicture';
+
 import { BottomTabParamList, ProfilParamList, TabOneParamList, TabTwoParamList } from '../types';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
@@ -84,8 +84,6 @@ function ProfilNavigator() {
       }
     }} >
       <ProfilStack.Screen name="ProfilScreen" component={ProfilScreen} options={{ headerTitle: 'Mon profil'}} />
-      <ProfilStack.Screen name="TakePicture" component={TakePicture} options={{ headerTitle: 'Photo de profil'}} />
-      <ProfilStack.Screen name="ShowPicture" component={ShowPicture} options={{ headerTitle: 'Photo de profil'}} />
     </ProfilStack.Navigator>
   )
 }

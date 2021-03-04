@@ -1,21 +1,57 @@
-import React, { useEffect, useState } from 'react';
-import { ImageBackground, ScrollView, Image, StyleSheet } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { ImageBackground, ScrollView,  StyleSheet, Platform } from 'react-native';
 import { Text, View } from '../components/Themed';
 import { FontAwesome } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { Avatar, Card, ListItem } from 'react-native-elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import RBSheet from 'react-native-raw-bottom-sheet';
+import * as ImagePicker from 'expo-image-picker';
 
 export default function ProfilScreen({navigation} : any) {
 
   const [avatar, setAvatar] = useState("https://randomuser.me/api/portraits/men/75.jpg");
 
-  useEffect(() => {
-      (async () => {
-          const img = await AsyncStorage.getItem('@profil_smh');
-          if(img) setAvatar(img);
-      })();
-  }, []);
+  const pickImage = async () => {
+    (async () => {
+        if (Platform.OS !== 'web') {
+            const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+            if (status !== 'granted') {
+                alert('Sorry, we need camera roll permissions to make this work!');
+            }
+        }
+    })();
+    let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+    });
+
+    console.log(result);
+    refRBSheet.current?.close()
+
+    if (!result.cancelled) {
+        setAvatar(result.uri);
+    }
+};
+
+const takeImage = async () => {
+    let result = await ImagePicker.launchCameraAsync({
+        allowsEditing : true,
+        quality: 1,
+        aspect: [4,3],
+    })
+
+    console.log(result);
+    refRBSheet.current?.close()
+
+    if (!result.cancelled) {
+        setAvatar(result.uri);
+    }
+}
+
+  const refRBSheet = useRef<RBSheet | null>(null);
 
 
   return (
@@ -23,8 +59,28 @@ export default function ProfilScreen({navigation} : any) {
         <ImageBackground source={require('../assets/images/profilBG.png')} style={styles.imageBG}>
             <ScrollView >
                 <Avatar containerStyle={{ alignSelf: 'center'}} rounded source={{ uri : avatar}} size='xlarge'>
-                  <Avatar.Accessory style={{backgroundColor: "#f05454"}} size={36} onPress={() => navigation.navigate('TakePicture')}/>
+                  <Avatar.Accessory style={{backgroundColor: "#f05454"}} size={36} onPress={() => refRBSheet.current?.open()}/>
                 </Avatar>
+                <RBSheet
+                  height={170}
+                  ref={refRBSheet}
+                  closeOnDragDown={true}
+                  customStyles={{
+                    wrapper: {
+                      backgroundColor: "transparent"
+                    },
+                    draggableIcon: {
+                      backgroundColor: "#f05454"
+                    }
+                  }}
+                >
+                  <ListItem onPress={pickImage}>
+                    <ListItem.Content><ListItem.Title>Choisir une photo de la gallerie</ListItem.Title></ListItem.Content>
+                  </ListItem>
+                  <ListItem onPress={takeImage}>
+                    <ListItem.Content><ListItem.Title>Prendre une photo</ListItem.Title></ListItem.Content>
+                  </ListItem>
+                </RBSheet>
                 <Text style={styles.title}>Maxime BERTHOLD</Text>
                 <Text style={styles.promo}>L1 front React | Groupe 1</Text>
                 <Card containerStyle={styles.cardBox}>
@@ -111,7 +167,4 @@ const styles = StyleSheet.create({
   mgBot : {
     marginBottom: 16,
   },
-  custom: {
-    paddingLeft: 8,
-  }
 });
