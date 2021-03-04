@@ -71,3 +71,9 @@ function TabTwoNavigator() {
     </TabTwoStack.Navigator>
   );
 }
+
+function WikiNavigator() {
+    return (
+        <
+    )
+}
