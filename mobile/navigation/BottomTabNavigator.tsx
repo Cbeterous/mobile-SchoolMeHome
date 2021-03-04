@@ -7,7 +7,7 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
-import {BottomTabParamList, ProfilParamList, TabOneParamList, TabTwoParamList} from '../types';
+import {BottomTabParamList, TabOneParamList, TabTwoParamList, WikiParamList} from '../types';
 import WikiList from "../screens/WikiList";
 import WikiDetail from "../screens/WikiDetail";
 
@@ -88,8 +88,8 @@ function WikiNavigator() {
                 textTransform: 'capitalize',
             }
         }} >
-            <WikiStack.Screen name="Wiki" component={WikiList} options={{ headerTitle: 'Mon Wiki'}} />
-            <WikiStack.Screen name="WikiDetail" component={WikiDetail} options={{ headerTitle: 'Detail'}} />
+            <WikiStack.Screen name="WikiScreen" component={WikiList} options={{ headerTitle: 'Mon Wiki'}} />
+            <WikiStack.Screen name="WikiDetailScreen" component={WikiDetail} options={{ headerTitle: 'Detail'}} />
         </WikiStack.Navigator>
     )
 }
