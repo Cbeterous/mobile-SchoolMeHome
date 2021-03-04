@@ -1,7 +1,7 @@
 import React from 'react';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
-import { View, Image,Button } from 'react-native';
+import { View, Image,Button, Text } from 'react-native';
 
 
 export default function ShowPicture ({navigation} : any) {
@@ -32,13 +32,15 @@ export default function ShowPicture ({navigation} : any) {
         } catch(e) {
             console.log(e);
         }
-        console.log('Done remove.')
         navigation.navigate('TakePicture')
     }
 
     return (
         <View style={{ flex: 1}}>
-            <Image source={{uri : img}} style={{ height: 400}}></Image>
+            {
+                img ? <Image source={{uri : img}} style={{ height: 400}}></Image> : <Text>Pas de photo</Text>
+            }
+            
             <Button title="Choisir cette photo" color="#f05454" onPress={ok}></Button>
             <Button title="Supprimer" color="#f05454" onPress={no}></Button>
         </View>

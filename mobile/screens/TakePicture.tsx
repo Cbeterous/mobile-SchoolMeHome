@@ -28,7 +28,6 @@ export default function TakePicture ({navigation} : any) {
         if (camera.current) {
             try {
                 let photo = await camera.current.takePictureAsync({quality: 1});
-                console.log(photo);
                 
                 ( async () => {
                     try {

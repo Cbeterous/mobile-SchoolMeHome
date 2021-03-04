@@ -11,12 +11,11 @@ export default function ProfilScreen({navigation} : any) {
   const [avatar, setAvatar] = useState("https://randomuser.me/api/portraits/men/75.jpg");
 
   useEffect(() => {
-    (async () => {
-        const img = await AsyncStorage.getItem('@profil_smh');
-        console.log(img);
-        if(img) setAvatar(img);
-    })();
-}, []);
+      (async () => {
+          const img = await AsyncStorage.getItem('@profil_smh');
+          if(img) setAvatar(img);
+      })();
+  }, []);
 
 
   return (
