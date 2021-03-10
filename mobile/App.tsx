@@ -5,8 +5,14 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
+import { AppRegistry, Button, StyleSheet, Text, View } from 'react-native';
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 
 export default function App() {
+  const client = new ApolloClient({
+    uri: 'http://192.168.1.15:4200/graphql',
+    cache: new InMemoryCache()
+  });
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
 
@@ -14,10 +20,13 @@ export default function App() {
     return null;
   } else {
     return (
-      <SafeAreaProvider>
-        <Navigation colorScheme={colorScheme} />
-        <StatusBar />
-      </SafeAreaProvider>
+      <ApolloProvider client={client}>
+        <SafeAreaProvider>
+          <Navigation colorScheme={colorScheme} />
+          <StatusBar />
+        </SafeAreaProvider>
+      </ApolloProvider>
     );
   }
 }
+AppRegistry.registerComponent('MyApplication', () => App);
