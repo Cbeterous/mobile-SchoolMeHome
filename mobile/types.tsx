@@ -4,6 +4,8 @@ export type RootStackParamList = {
 };
 
 export type BottomTabParamList = {
+  Wiki: undefined;
+  Detail: undefined;
   Profil: undefined;
   Slides: undefined;
 };
@@ -16,4 +18,9 @@ export type ProfilParamList = {
 }
 export type SlidesView = {
   SlidesViewScreen: undefined;
+};
+
+export type WikiParamList = {
+  Wiki: undefined;
+  Detail: undefined;
 };

@@ -6,9 +6,11 @@ import * as React from 'react';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
+import {BottomTabParamList, WikiParamList, ProfilParamList, SlidesView} from '../types';
+import WikiList from "../screens/WikiList";
+import WikiDetail from "../screens/WikiDetail";
 import ProfilScreen from '../screens/ProfilScreen';
 
-import { BottomTabParamList, ProfilParamList, SlidesView } from '../types';
 import SlidesViewScreen from '../screens/SlidesViewScreen';
 
 
@@ -32,6 +34,13 @@ export default function BottomTabNavigator() {
       <BottomTab.Screen
         name="Slides"
         component={SlidesViewNavigator}
+        options={{
+          tabBarIcon: ({ color }) => <TabBarIcon name="ios-copy-outline" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="Wiki"
+        component={WikiNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-copy-outline" color={color} />,
         }}
@@ -88,4 +97,24 @@ function SlidesViewNavigator() {
       />
     </SlidesViewStack.Navigator>
   );
+}
+
+const WikiStack = createStackNavigator<WikiParamList>();
+
+function WikiNavigator() {
+    return (
+        <WikiStack.Navigator screenOptions={{
+            headerStyle: {
+                backgroundColor:'#30475e',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                fontWeight: 'bold',
+                textTransform: 'capitalize',
+            }
+        }} >
+            <WikiStack.Screen name="Wiki" component={WikiList} options={{ headerTitle: 'Mon Wiki'}} />
+            <WikiStack.Screen name="Detail" component={WikiDetail} options={{ headerTitle: 'Detail'}} />
+        </WikiStack.Navigator>
+    )
 }
