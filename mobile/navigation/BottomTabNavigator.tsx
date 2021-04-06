@@ -1,4 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
@@ -6,8 +7,14 @@ import * as React from 'react';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import LoginComponent from '../screens/LoginComponent';
-import ProfilComponent from '../screens/ProfilComponent';
-import { BottomTabParamList, LoginParamList, ProfilParamList } from '../types';
+import {BottomTabParamList, WikiParamList, ProfilParamList, SlidesView, LoginParamList} from '../types';
+import WikiList from "../screens/WikiList";
+import WikiDetail from "../screens/WikiDetail";
+import ProfilScreen from '../screens/ProfilScreen';
+
+import SlidesViewScreen from '../screens/SlidesViewScreen';
+
+
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -27,9 +34,23 @@ export default function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="Profil"
-        component={ProfilComponent}
+        component={ProfilNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-person-outline" color={color} />,
+          tabBarIcon: ({ color }) => <AntDesign name="user" size={24} color={color} />
+        }}
+      />
+      <BottomTab.Screen
+        name="Slides"
+        component={SlidesViewNavigator}
+        options={{
+          tabBarIcon: ({ color }) => <TabBarIcon name="ios-copy-outline" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="Wiki"
+        component={WikiNavigator}
+        options={{
+          tabBarIcon: ({ color }) => <TabBarIcon name="ios-copy-outline" color={color} />,
         }}
       />
     </BottomTab.Navigator>
@@ -37,7 +58,7 @@ export default function BottomTabNavigator() {
 }
 
 // You can explore the built-in icon families and icons on the web at:
-// https://icons.expo.fyi/
+// https://icons.expo.fyi/ <AntDesign name="switcher" size={24} color="black" />
 function TabBarIcon(props: { name: React.ComponentProps<typeof Ionicons>['name']; color: string }) {
   return <Ionicons size={30} style={{ marginBottom: -3 }} {...props} />;
 }
@@ -62,12 +83,59 @@ const ProfilStack = createStackNavigator<ProfilParamList>();
 
 function ProfilNavigator() {
   return (
-    <ProfilStack.Navigator>
-      <ProfilStack.Screen
-        name="ProfilScreen"
-        component={ProfilComponent}
-        options={{ headerTitle: 'Tab Two Title' }}
-      />
+    <ProfilStack.Navigator screenOptions={{
+      headerStyle: {
+        backgroundColor:'#30475e', 
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+        textTransform: 'capitalize',
+      }
+    }} >
+      <ProfilStack.Screen name="ProfilScreen" component={ProfilScreen} options={{ headerTitle: 'Mon profil'}} />
     </ProfilStack.Navigator>
   );
+}
+
+const SlidesViewStack = createStackNavigator<SlidesView>();
+
+function SlidesViewNavigator() {
+  return (
+    <SlidesViewStack.Navigator>
+      <SlidesViewStack.Screen
+        name="SlidesViewScreen"
+        component={SlidesViewScreen}
+        options={{ 
+          headerTitle: 'Slides', 
+          headerStyle: {
+            backgroundColor: '#30475e'
+          },
+          headerTitleStyle: {
+            color: '#f05454',
+          }
+        }}
+      />
+    </SlidesViewStack.Navigator>
+  );
+}
+
+const WikiStack = createStackNavigator<WikiParamList>();
+
+function WikiNavigator() {
+    return (
+        <WikiStack.Navigator screenOptions={{
+            headerStyle: {
+                backgroundColor:'#30475e',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                fontWeight: 'bold',
+                textTransform: 'capitalize',
+            }
+        }} >
+            <WikiStack.Screen name="Wiki" component={WikiList} options={{ headerTitle: 'Mon Wiki'}} />
+            <WikiStack.Screen name="Detail" component={WikiDetail} options={{ headerTitle: 'Detail'}} />
+        </WikiStack.Navigator>
+    )
 }
