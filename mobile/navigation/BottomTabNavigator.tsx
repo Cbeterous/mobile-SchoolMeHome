@@ -18,26 +18,32 @@ export default function BottomTabNavigator() {
   return (
     <BottomTab.Navigator
       initialRouteName="TabOne"
-      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
+      tabBarOptions={{ 
+        activeTintColor: "#f05454",
+        // activeBackgroundColor:"green",
+        style:{
+          backgroundColor: '#30475e'
+        }
+      }}>
       <BottomTab.Screen
-        name="TabOne"
+        name="Home"
         component={TabOneNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="ios-home-outline" color={color} />,
         }}
       />
-      <BottomTab.Screen
+      {/* <BottomTab.Screen
         name="TabTwo"
         component={TabTwoNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
         }}
-      />
+      /> */}
       <BottomTab.Screen
-        name="SlidesView"
+        name="Slides"
         component={SlidesViewNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="ios-copy-outline" color={color} />,
         }}
       />
     </BottomTab.Navigator>
@@ -45,7 +51,7 @@ export default function BottomTabNavigator() {
 }
 
 // You can explore the built-in icon families and icons on the web at:
-// https://icons.expo.fyi/
+// https://icons.expo.fyi/ <AntDesign name="switcher" size={24} color="black" />
 function TabBarIcon(props: { name: React.ComponentProps<typeof Ionicons>['name']; color: string }) {
   return <Ionicons size={30} style={{ marginBottom: -3 }} {...props} />;
 }
@@ -60,7 +66,13 @@ function TabOneNavigator() {
       <TabOneStack.Screen
         name="TabOneScreen"
         component={TabOneScreen}
-        options={{ headerTitle: 'Tab One Title' }}
+        options={{ headerTitle: 'Tab One Title',  headerStyle: {
+          backgroundColor: '#30475e'
+        },
+        headerTitleStyle: {
+          color: '#f05454',
+        }
+      }}
       />
     </TabOneStack.Navigator>
   );
@@ -74,7 +86,13 @@ function TabTwoNavigator() {
       <TabTwoStack.Screen
         name="TabTwoScreen"
         component={TabTwoScreen}
-        options={{ headerTitle: 'Tab Two Title' }}
+        options={{ headerTitle: 'Tab Two Title', headerStyle: {
+          backgroundColor: '#30475e'
+        },
+        headerTitleStyle: {
+          color: '#f05454',
+        }
+      }}
       />
     </TabTwoStack.Navigator>
   );
@@ -88,7 +106,15 @@ function SlidesViewNavigator() {
       <SlidesViewStack.Screen
         name="SlidesViewScreen"
         component={SlidesViewScreen}
-        options={{ headerTitle: 'Slides' }}
+        options={{ 
+          headerTitle: 'Slides', 
+          headerStyle: {
+            backgroundColor: '#30475e'
+          },
+          headerTitleStyle: {
+            color: '#f05454',
+          }
+        }}
       />
     </SlidesViewStack.Navigator>
   );

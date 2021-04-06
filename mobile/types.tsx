@@ -6,7 +6,7 @@ export type RootStackParamList = {
 export type BottomTabParamList = {
   TabOne: undefined;
   TabTwo: undefined;
-  SlidesView: undefined;
+  Slides: undefined;
 };
 
 export type TabOneParamList = {

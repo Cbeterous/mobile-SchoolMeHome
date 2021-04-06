@@ -1,52 +1,54 @@
-import React, { useState } from 'react';
-import { StyleSheet, Dimensions, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Dimensions, ScrollView, ActivityIndicator } from 'react-native';
 import HTMLView from 'react-native-htmlview';
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
-import { Provider as PaperProvider, Card, Title, Paragraph, Menu, Button } from "react-native-paper";
+import { Provider as PaperProvider, Card, Title, Paragraph, Menu, Button, DefaultTheme } from "react-native-paper";
 import Carousel, { Pagination } from 'react-native-snap-carousel';
+import { gql, useQuery } from '@apollo/client';
 
 
-const { width } = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
+
+type Slide = {
+  _id: string,
+  title: string,
+  htmlContent: string
+}
+
+type Presentation = {
+  _id: string,
+  title: string,
+  slides: Slide[]
+}
+
+
+const theme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: '#f05454',
+  },
+};
 
 export default function SlidesViewScreen() {
 
-  const [presentation, setPresentation] = useState([{
-    _id: 1,
-    title: 'cours 1',
-    slides: [
-      {
-        content: `<h2><strong>React native</strong></h2>
-        <p><img src="https://d1fmx1rbmqrxrr.cloudfront.net/cnet/optim/i/edit/2019/04/eso1644bsmall__w770.jpg" alt="dfsdfsdf" width="400" height="300" style="display: block; margin-left: auto; margin-right: auto;" /></p>
-        <p><strong>Lorem Ipsum</strong><span>&nbsp;is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</span></p>`
-      },
-      {
-        content: '<h1>Cours 1 Slide 2</h1>'
-      },
-      {
-        content: '<h1>Cours 1 Slide 3</h1>'
-      },
-    ]
-  },
-  {
-    _id: 2,
-    title: 'cours 2',
-    slides: [
-      {
-        content: '<h1>Cours 2 Slide 1</h1>'
-      },
-      {
-        content: '<h1>Cours 2 Slide 2</h1>'
-      },
-    ]
-  },
-  ])
+  const GET_PRESENTATIONS = gql`
+  query findAllPres {findAllPresentation {_id, title, slides{title, htmlContent}}}
+`;
 
-  const [selectedPres, setSelectedPres] = useState(presentation[0]._id);
-
+  const { loading, error, data } = useQuery(GET_PRESENTATIONS);
+  const [presentation, setPresentation] = useState<Presentation[]>([])
+  const [selectedPres, setSelectedPres] = useState<string>();
   const [activeSlide, setActiveSlide] = useState<number>(0)
+  const [visible, setVisible] = useState<boolean>(false);
 
-  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    if (data) {
+      setPresentation(data.findAllPresentation)
+      setSelectedPres(data.findAllPresentation[0]._id)
+    }
+  }, [data])
 
   const openMenu = () => setVisible(true);
 
@@ -57,9 +59,9 @@ export default function SlidesViewScreen() {
       <View >
         <Card >
           <Card.Content style={styles.carousel}>
-            <ScrollView>
+            <ScrollView >
               <HTMLView
-                value={item.content}
+                value={item.htmlContent}
                 stylesheet={styles}
               />
             </ScrollView>
@@ -69,51 +71,67 @@ export default function SlidesViewScreen() {
     );
   }
 
-
-  return (
-    <PaperProvider>
-      <View style={styles.container}>
-        <Carousel
-          // ref={(c: any) => { _carousel = c; }}
-          data={presentation.find(p => p._id === selectedPres)?.slides}
-          renderItem={_renderItem}
-          sliderWidth={width}
-          itemWidth={width - 75}
-          layout={'default'}
-          onSnapToItem={(index: number) => setActiveSlide(index)}
-        />
-        <Pagination
-          dotsLength={presentation.find(p => p._id === selectedPres)?.slides.length}
-          activeDotIndex={activeSlide}
-          dotStyle={{
-            width: 10,
-            height: 10,
-            borderRadius: 5,
-            marginHorizontal: 8,
-            backgroundColor: 'rgba(75, 54, 54, 0.92)'
-          }}
-          inactiveDotOpacity={0.4}
-          inactiveDotScale={0.6}
-        />
-        <Menu
-          visible={visible}
-          onDismiss={closeMenu}
-          statusBarHeight={-175}
-          anchor={<Button mode="contained" onPress={openMenu}>Choix du cours</Button>}>
-          {presentation.map(p => {
-            return (
-              <Menu.Item
-                onPress={() => {
-                  setSelectedPres(p._id);
-                  closeMenu()
-                }}
-                title={p.title} />
-            )
-          })}
-        </Menu>
-      </View>
-    </PaperProvider>
+  if (loading) return (
+    <View style={[styles.container, styles.horizontal]}>
+      <ActivityIndicator size="large" color="#f05454" />
+    </View>
   );
+  if (error) return <View><Text>Error! </Text></View>;
+  if (presentation.length === 0) return (
+    <View style={[styles.container, styles.horizontal]}>
+      <ActivityIndicator size="large" color="#f05454" />
+    </View>
+  ) 
+  if (presentation.length > 0) {
+    return (
+      <PaperProvider >
+        <View style={styles.container}>
+          <Carousel
+            data={presentation.find(p => p._id === selectedPres)?.slides}
+            renderItem={_renderItem}
+            sliderWidth={width}
+            itemWidth={width - 75}
+            layout={'default'}
+            onSnapToItem={(index: number) => {
+              setActiveSlide(index)
+            }}
+          />
+          <Pagination
+            dotsLength={presentation.find(p => p._id === selectedPres)?.slides.length}
+            activeDotIndex={activeSlide}
+            dotStyle={{
+              width: 10,
+              height: 10,
+              borderRadius: 5,
+              marginHorizontal: 8,
+              backgroundColor: '#f05454'
+            }}
+            inactiveDotOpacity={0.4}
+            inactiveDotScale={0.6}
+          />
+          <Menu
+            visible={visible}
+            onDismiss={closeMenu}
+            statusBarHeight={-height / 2}
+            anchor={<Button mode="contained" theme={theme} labelStyle={{ color: "white" }} style={{ marginBottom: 10 }} onPress={openMenu}>Choix du cours</Button>}>
+            {presentation.map(p => {
+              return (
+                <Menu.Item
+                  key={p._id}
+                  onPress={() => {
+                    // setActiveSlide(0)
+                    setSelectedPres(p._id);
+                    closeMenu()
+                  }}
+                  title={p.title} />
+              )
+            })}
+          </Menu>
+        </View>
+      </PaperProvider>
+    );
+  }
+
 }
 
 const styles = StyleSheet.create({
@@ -127,6 +145,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   carousel: {
-    height: 450
-  }
+    height: 440
+  },
+  horizontal: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: 10,
+  },
 });
