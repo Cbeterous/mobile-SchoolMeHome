@@ -12,8 +12,8 @@ function LoginComponent() {
   const [password, setPassword] = useState('');
 
   const LOGIN = gql`
-    mutation signin($email: String!, $password: String!){
-      signin(email: $email, password: $password){
+    mutation signIn($email: String!, $password: String!){
+      signIn(email: $email, password: $password){
         user{
           firstName, 
           role
@@ -30,7 +30,7 @@ function LoginComponent() {
         if (loading) {console.log(loading)};
         if (error) {console.log(error)}
       if (data) {
-        console.log(data.signin);
+        console.log(data.signIn);
       }
 
 
@@ -53,9 +53,9 @@ function LoginComponent() {
           </TextInput>
           <Button color="#f05454" title="Connexion" onPress={() => signin({variables: {email: email, password: password}})}  />
         <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-        <Text>Rôle : {data && data.signin.user.role}</Text>
-        <Text>Prénom : {data && data.signin.user.firstName}</Text>
-        <Text>Token : {data && data.signin.token}</Text>
+        <Text>Rôle : {data && data.signIn.user.role}</Text>
+        <Text>Prénom : {data && data.signIn.user.firstName}</Text>
+        <Text>Token : {data && data.signIn.token}</Text>
       </View>
   );
   }
