@@ -10,7 +10,7 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 
 export default function App() {
   const client = new ApolloClient({
-    uri: 'http://192.168.1.15:4200/graphql',
+    uri: 'http://192.168.1.13:4200/graphql',
     cache: new InMemoryCache()
   });
   const isLoadingComplete = useCachedResources();
