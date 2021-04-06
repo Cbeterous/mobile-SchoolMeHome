@@ -1,6 +1,5 @@
 import React, {Component} from "react";
-import {FlatList, StatusBar, StyleSheet, Text, TextComponent, TouchableOpacity, View} from "react-native";
-
+import {FlatList, ScrollView, StatusBar, StyleSheet, Text, TextComponent, TouchableOpacity, View} from "react-native";
 
 
 const DATA = [
@@ -15,17 +14,17 @@ const DATA = [
         content: "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat."
     },
     {
-        id: '58694a0f-3da1-471f-bd96-145571e29d72',
+        id: '519023a0f-3da1-471f-bd96-145571e29d72',
         title: 'Flutter',
         content: "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat."
     },
     {
-        id: '58694a0f-3da1-471f-bd96-145571e29d72',
+        id: '193837a0f-3da1-471f-bd96-145571e29d72',
         title: 'Docker',
         content: "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat."
     },
     {
-        id: '58694a0f-3da1-471f-bd96-145571e29d72',
+        id: '893834a0f-3da1-471f-bd96-145571e29d72',
         title: 'GraphQL / MongoDB',
         content: "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat."
     },
@@ -33,21 +32,20 @@ const DATA = [
 
 
 const Item = ({item}: any) => (
-    <View style={styles.item}>
+    <ScrollView style={styles.item}>
         <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.title}>{item.content}</Text>
-    </View>
+        <Text style={styles.content}>{item.content}</Text>
+    </ScrollView>
 );
 
-export default class WikiDetail extends Component {
-
-    render(){
+export default ({route, navigation}: any) => {
+    const detail = DATA.filter(item => {
+        return item.id === route.params.id
+    })
+    console.log(detail[0])
         return (
-            <Item>
-
-            </Item>
+            <Item item={detail[0]}/>
         )
-    }
 }
 
 const styles = StyleSheet.create({
@@ -56,12 +54,20 @@ const styles = StyleSheet.create({
         marginTop: StatusBar.currentHeight || 0,
     },
     item: {
-        backgroundColor: '#f9c2ff',
         padding: 20,
         marginVertical: 8,
         marginHorizontal: 16,
+        borderColor: "#000"
     },
     title: {
+        textAlign: "center",
         fontSize: 32,
     },
+    content: {
+        padding: 8,
+        margin: 8,
+        fontSize: 24,
+        textAlign: "justify"
+
+    }
 });

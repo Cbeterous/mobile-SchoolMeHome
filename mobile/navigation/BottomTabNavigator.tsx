@@ -81,8 +81,8 @@ function WikiNavigator() {
                 textTransform: 'capitalize',
             }
         }} >
-            <WikiStack.Screen name="WikiScreen" component={WikiList} options={{ headerTitle: 'Mon Wiki'}} />
-            <WikiStack.Screen name="WikiDetailScreen" component={WikiDetail} options={{ headerTitle: 'Detail'}} />
+            <WikiStack.Screen name="Wiki" component={WikiList} options={{ headerTitle: 'Mon Wiki'}} />
+            <WikiStack.Screen name="Detail" component={WikiDetail} options={{ headerTitle: 'Detail'}} />
         </WikiStack.Navigator>
     )
 }

@@ -19,6 +19,6 @@ export type TabTwoParamList = {
 };
 
 export type WikiParamList = {
-  WikiScreen: undefined;
-  WikiDetailScreen: undefined;
+  Wiki: undefined;
+  Detail: undefined;
 };
