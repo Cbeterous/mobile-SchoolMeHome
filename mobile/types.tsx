@@ -9,6 +9,7 @@ export type BottomTabParamList = {
   Profil: undefined;
   Slides: undefined;
   Login: undefined;
+  Calendar: undefined;
 };
 
 
@@ -27,4 +28,8 @@ export type WikiParamList = {
 };
 export type LoginParamList = {
   LoginComponent: undefined;
+};
+
+export type CalendarParamList = {
+  CalendarScreen: undefined;
 };

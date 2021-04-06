@@ -7,12 +7,13 @@ import * as React from 'react';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import LoginComponent from '../screens/LoginComponent';
-import {BottomTabParamList, WikiParamList, ProfilParamList, SlidesView, LoginParamList} from '../types';
+import {BottomTabParamList, WikiParamList, ProfilParamList, SlidesView, LoginParamList, CalendarParamList } from '../types';
 import WikiList from "../screens/WikiList";
 import WikiDetail from "../screens/WikiDetail";
 import ProfilScreen from '../screens/ProfilScreen';
 
 import SlidesViewScreen from '../screens/SlidesViewScreen';
+import CalendarScreen from '../screens/CalendarScreen';
 
 
 
@@ -49,6 +50,13 @@ export default function BottomTabNavigator() {
       <BottomTab.Screen
         name="Wiki"
         component={WikiNavigator}
+        options={{
+          tabBarIcon: ({ color }) => <TabBarIcon name="ios-copy-outline" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="Calendar"
+        component={CalendarNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-copy-outline" color={color} />,
         }}
@@ -138,4 +146,26 @@ function WikiNavigator() {
             <WikiStack.Screen name="Detail" component={WikiDetail} options={{ headerTitle: 'Detail'}} />
         </WikiStack.Navigator>
     )
+}
+
+const CalendarStack = createStackNavigator<CalendarParamList>();
+
+function CalendarNavigator() {
+  return (
+    <CalendarStack.Navigator>
+      <CalendarStack.Screen
+        name="CalendarScreen"
+        component={CalendarScreen}
+        options={{ 
+          headerTitle: 'Slides', 
+          headerStyle: {
+            backgroundColor: '#30475e'
+          },
+          headerTitleStyle: {
+            color: '#f05454',
+          }
+        }}
+      />
+    </CalendarStack.Navigator>
+  );
 }
