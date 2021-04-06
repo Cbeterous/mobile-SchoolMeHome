@@ -1,15 +1,19 @@
 import { Ionicons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import TabOneScreen from '../screens/TabOneScreen';
-import TabTwoScreen from '../screens/TabTwoScreen';
-import {BottomTabParamList, TabOneParamList, TabTwoParamList, WikiParamList} from '../types';
+import {BottomTabParamList, WikiParamList, ProfilParamList, SlidesView} from '../types';
 import WikiList from "../screens/WikiList";
 import WikiDetail from "../screens/WikiDetail";
+import ProfilScreen from '../screens/ProfilScreen';
+
+import SlidesViewScreen from '../screens/SlidesViewScreen';
+
+
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -18,13 +22,27 @@ export default function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="Wiki"
-      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
+      initialRouteName="Profil"
+      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint, style: {backgroundColor: Colors[colorScheme].background} }}>
+      <BottomTab.Screen
+        name="Profil"
+        component={ProfilNavigator}
+        options={{
+          tabBarIcon: ({ color }) => <AntDesign name="user" size={24} color={color} />
+        }}
+      />
+      <BottomTab.Screen
+        name="Slides"
+        component={SlidesViewNavigator}
+        options={{
+          tabBarIcon: ({ color }) => <TabBarIcon name="ios-copy-outline" color={color} />,
+        }}
+      />
       <BottomTab.Screen
         name="Wiki"
         component={WikiNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="ios-copy-outline" color={color} />,
         }}
       />
     </BottomTab.Navigator>
@@ -32,38 +50,52 @@ export default function BottomTabNavigator() {
 }
 
 // You can explore the built-in icon families and icons on the web at:
-// https://icons.expo.fyi/
+// https://icons.expo.fyi/ <AntDesign name="switcher" size={24} color="black" />
 function TabBarIcon(props: { name: React.ComponentProps<typeof Ionicons>['name']; color: string }) {
   return <Ionicons size={30} style={{ marginBottom: -3 }} {...props} />;
 }
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
-const TabOneStack = createStackNavigator<TabOneParamList>();
 
-function TabOneNavigator() {
+const ProfilStack = createStackNavigator<ProfilParamList>();
+
+function ProfilNavigator() {
   return (
-    <TabOneStack.Navigator>
-      <TabOneStack.Screen
-        name="TabOneScreen"
-        component={TabOneScreen}
-        options={{ headerTitle: 'Tab One Title' }}
-      />
-    </TabOneStack.Navigator>
+    <ProfilStack.Navigator screenOptions={{
+      headerStyle: {
+        backgroundColor:'#30475e', 
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+        textTransform: 'capitalize',
+      }
+    }} >
+      <ProfilStack.Screen name="ProfilScreen" component={ProfilScreen} options={{ headerTitle: 'Mon profil'}} />
+    </ProfilStack.Navigator>
   );
 }
 
-const TabTwoStack = createStackNavigator<TabTwoParamList>();
+const SlidesViewStack = createStackNavigator<SlidesView>();
 
-function TabTwoNavigator() {
+function SlidesViewNavigator() {
   return (
-    <TabTwoStack.Navigator>
-      <TabTwoStack.Screen
-        name="TabTwoScreen"
-        component={TabTwoScreen}
-        options={{ headerTitle: 'Tab Two Title' }}
+    <SlidesViewStack.Navigator>
+      <SlidesViewStack.Screen
+        name="SlidesViewScreen"
+        component={SlidesViewScreen}
+        options={{ 
+          headerTitle: 'Slides', 
+          headerStyle: {
+            backgroundColor: '#30475e'
+          },
+          headerTitleStyle: {
+            color: '#f05454',
+          }
+        }}
       />
-    </TabTwoStack.Navigator>
+    </SlidesViewStack.Navigator>
   );
 }
 

@@ -4,18 +4,20 @@ export type RootStackParamList = {
 };
 
 export type BottomTabParamList = {
-  TabOne: undefined;
-  TabTwo: undefined;
   Wiki: undefined;
   Detail: undefined;
+  Profil: undefined;
+  Slides: undefined;
 };
 
-export type TabOneParamList = {
-  TabOneScreen: undefined;
-};
 
-export type TabTwoParamList = {
-  TabTwoScreen: undefined;
+export type ProfilParamList = {
+  ProfilScreen: undefined;
+  TakePicture: undefined;
+  ShowPicture: undefined;
+}
+export type SlidesView = {
+  SlidesViewScreen: undefined;
 };
 
 export type WikiParamList = {
