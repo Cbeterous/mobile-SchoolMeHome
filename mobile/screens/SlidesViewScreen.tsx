@@ -131,7 +131,7 @@ export default function SlidesViewScreen() {
       </PaperProvider>
     );
   }
-
+  return <View><Text>ttt </Text></View>;
 }
 
 const styles = StyleSheet.create({

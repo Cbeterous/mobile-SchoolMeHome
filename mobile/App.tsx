@@ -13,7 +13,7 @@ export default function App() {
   const colorScheme = useColorScheme();
 
   const client = new ApolloClient({
-    uri: 'http://192.168.1.15:4300/graphql',
+    uri: 'http://192.168.1.20:4300/graphql',
     cache: new InMemoryCache()
   });
 

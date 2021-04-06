@@ -1,14 +1,17 @@
 import { Ionicons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
+import ProfilScreen from '../screens/ProfilScreen';
+
+import { BottomTabParamList, ProfilParamList, SlidesView } from '../types';
 import SlidesViewScreen from '../screens/SlidesViewScreen';
-import TabOneScreen from '../screens/TabOneScreen';
-import TabTwoScreen from '../screens/TabTwoScreen';
-import { BottomTabParamList, TabOneParamList, TabTwoParamList, SlidesView } from '../types';
+
+
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -17,28 +20,15 @@ export default function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
-      tabBarOptions={{ 
-        activeTintColor: "#f05454",
-        // activeBackgroundColor:"green",
-        style:{
-          backgroundColor: '#30475e'
-        }
-      }}>
+      initialRouteName="Profil"
+      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint, style: {backgroundColor: Colors[colorScheme].background} }}>
       <BottomTab.Screen
-        name="Home"
-        component={TabOneNavigator}
+        name="Profil"
+        component={ProfilNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-home-outline" color={color} />,
+          tabBarIcon: ({ color }) => <AntDesign name="user" size={24} color={color} />
         }}
       />
-      {/* <BottomTab.Screen
-        name="TabTwo"
-        component={TabTwoNavigator}
-        options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
-        }}
-      /> */}
       <BottomTab.Screen
         name="Slides"
         component={SlidesViewNavigator}
@@ -58,43 +48,23 @@ function TabBarIcon(props: { name: React.ComponentProps<typeof Ionicons>['name']
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
-const TabOneStack = createStackNavigator<TabOneParamList>();
 
-function TabOneNavigator() {
+const ProfilStack = createStackNavigator<ProfilParamList>();
+
+function ProfilNavigator() {
   return (
-    <TabOneStack.Navigator>
-      <TabOneStack.Screen
-        name="TabOneScreen"
-        component={TabOneScreen}
-        options={{ headerTitle: 'Tab One Title',  headerStyle: {
-          backgroundColor: '#30475e'
-        },
-        headerTitleStyle: {
-          color: '#f05454',
-        }
-      }}
-      />
-    </TabOneStack.Navigator>
-  );
-}
-
-const TabTwoStack = createStackNavigator<TabTwoParamList>();
-
-function TabTwoNavigator() {
-  return (
-    <TabTwoStack.Navigator>
-      <TabTwoStack.Screen
-        name="TabTwoScreen"
-        component={TabTwoScreen}
-        options={{ headerTitle: 'Tab Two Title', headerStyle: {
-          backgroundColor: '#30475e'
-        },
-        headerTitleStyle: {
-          color: '#f05454',
-        }
-      }}
-      />
-    </TabTwoStack.Navigator>
+    <ProfilStack.Navigator screenOptions={{
+      headerStyle: {
+        backgroundColor:'#30475e', 
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+        textTransform: 'capitalize',
+      }
+    }} >
+      <ProfilStack.Screen name="ProfilScreen" component={ProfilScreen} options={{ headerTitle: 'Mon profil'}} />
+    </ProfilStack.Navigator>
   );
 }
 
