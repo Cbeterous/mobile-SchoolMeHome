@@ -6,7 +6,8 @@ import * as React from 'react';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import {BottomTabParamList, WikiParamList, ProfilParamList, SlidesView} from '../types';
+import LoginComponent from '../screens/LoginComponent';
+import {BottomTabParamList, WikiParamList, ProfilParamList, SlidesView, LoginParamList} from '../types';
 import WikiList from "../screens/WikiList";
 import WikiDetail from "../screens/WikiDetail";
 import ProfilScreen from '../screens/ProfilScreen';
@@ -22,8 +23,15 @@ export default function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="Profil"
-      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint, style: {backgroundColor: Colors[colorScheme].background} }}>
+      initialRouteName="Login"
+      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
+      <BottomTab.Screen
+        name="Login"
+        component={LoginNavigator}
+        options={{
+          tabBarIcon: ({ color }) => <TabBarIcon name="ios-home-outline" color={color} />,
+        }}
+      />
       <BottomTab.Screen
         name="Profil"
         component={ProfilNavigator}
@@ -57,6 +65,19 @@ function TabBarIcon(props: { name: React.ComponentProps<typeof Ionicons>['name']
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
+const LoginStack = createStackNavigator<LoginParamList>();
+
+function LoginNavigator() {
+  return (
+    <LoginStack.Navigator>
+      <LoginStack.Screen
+        name="LoginComponent"
+        component={LoginComponent}
+        options={{ headerTitle: 'Connexion' }}
+      />
+    </LoginStack.Navigator>
+  );
+}
 
 const ProfilStack = createStackNavigator<ProfilParamList>();
 
