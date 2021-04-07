@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { Button, StyleSheet, Image } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
@@ -7,6 +7,7 @@ import { Text, View } from '../components/Themed';
 import { gql, useQuery } from '@apollo/client'
 import {useMutation} from '@apollo/react-hooks'
 import ProfilComponent from './ProfilComponent';
+import { UserContext } from '../context/userContext';
 function LoginComponent() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -15,6 +16,7 @@ function LoginComponent() {
     mutation signIn($email: String!, $password: String!){
       signIn(email: $email, password: $password){
         user{
+          email,
           firstName, 
           role
         }, 
@@ -24,15 +26,19 @@ function LoginComponent() {
   console.log(email)
   console.log(password)
 
-
+  const {userEmail, setUserEmail} = React.useContext(UserContext);
   const [signin, {data, loading, error }] = useMutation(LOGIN);
   
-        if (loading) {console.log(loading)};
+  useEffect(() => {
+    if (loading) {console.log(loading)};
         if (error) {console.log(error)}
       if (data) {
         console.log(data.signIn);
+        setUserEmail(data.signIn.user.email);
+        console.log(userEmail)
       }
-
+  }, [loading, error, data])
+        
 
   return (
       <View style={styles.container}>
