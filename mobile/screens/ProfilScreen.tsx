@@ -6,10 +6,12 @@ import { Entypo } from '@expo/vector-icons';
 import { Avatar, Card, ListItem } from 'react-native-elements';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import * as ImagePicker from 'expo-image-picker';
+import { UserContext } from '../context/userContext';
 
 export default function ProfilScreen({navigation} : any) {
 
   const [avatar, setAvatar] = useState("https://randomuser.me/api/portraits/men/75.jpg");
+  const {userEmail} = React.useContext(UserContext);
 
   const pickImage = async () => {
     (async () => {
