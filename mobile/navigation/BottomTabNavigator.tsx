@@ -7,11 +7,10 @@ import * as React from 'react';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import LoginComponent from '../screens/LoginComponent';
-import {BottomTabParamList, WikiParamList, ProfilParamList, SlidesView, LoginParamList, CalendarParamList } from '../types';
+import { BottomTabParamList, WikiParamList, ProfilParamList, SlidesView, LoginParamList, CalendarParamList } from '../types';
 import WikiList from "../screens/WikiList";
 import WikiDetail from "../screens/WikiDetail";
 import ProfilScreen from '../screens/ProfilScreen';
-
 import SlidesViewScreen from '../screens/SlidesViewScreen';
 import CalendarScreen from '../screens/CalendarScreen';
 
@@ -55,7 +54,7 @@ export default function BottomTabNavigator() {
         }}
       />
       <BottomTab.Screen
-        name="Calendar"
+        name="Calendrier"
         component={CalendarNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-copy-outline" color={color} />,
@@ -93,7 +92,7 @@ function ProfilNavigator() {
   return (
     <ProfilStack.Navigator screenOptions={{
       headerStyle: {
-        backgroundColor:'#30475e', 
+        backgroundColor: '#30475e',
       },
       headerTintColor: '#fff',
       headerTitleStyle: {
@@ -101,7 +100,7 @@ function ProfilNavigator() {
         textTransform: 'capitalize',
       }
     }} >
-      <ProfilStack.Screen name="ProfilScreen" component={ProfilScreen} options={{ headerTitle: 'Mon profil'}} />
+      <ProfilStack.Screen name="ProfilScreen" component={ProfilScreen} options={{ headerTitle: 'Mon profil' }} />
     </ProfilStack.Navigator>
   );
 }
@@ -114,8 +113,8 @@ function SlidesViewNavigator() {
       <SlidesViewStack.Screen
         name="SlidesViewScreen"
         component={SlidesViewScreen}
-        options={{ 
-          headerTitle: 'Slides', 
+        options={{
+          headerTitle: 'Slides',
           headerStyle: {
             backgroundColor: '#30475e'
           },
@@ -131,21 +130,21 @@ function SlidesViewNavigator() {
 const WikiStack = createStackNavigator<WikiParamList>();
 
 function WikiNavigator() {
-    return (
-        <WikiStack.Navigator screenOptions={{
-            headerStyle: {
-                backgroundColor:'#30475e',
-            },
-            headerTintColor: '#fff',
-            headerTitleStyle: {
-                fontWeight: 'bold',
-                textTransform: 'capitalize',
-            }
-        }} >
-            <WikiStack.Screen name="Wiki" component={WikiList} options={{ headerTitle: 'Mon Wiki'}} />
-            <WikiStack.Screen name="Detail" component={WikiDetail} options={{ headerTitle: 'Detail'}} />
-        </WikiStack.Navigator>
-    )
+  return (
+    <WikiStack.Navigator screenOptions={{
+      headerStyle: {
+        backgroundColor: '#30475e',
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+        textTransform: 'capitalize',
+      }
+    }} >
+      <WikiStack.Screen name="Wiki" component={WikiList} options={{ headerTitle: 'Mon Wiki' }} />
+      <WikiStack.Screen name="Detail" component={WikiDetail} options={{ headerTitle: 'Detail' }} />
+    </WikiStack.Navigator>
+  )
 }
 
 const CalendarStack = createStackNavigator<CalendarParamList>();
@@ -156,8 +155,8 @@ function CalendarNavigator() {
       <CalendarStack.Screen
         name="CalendarScreen"
         component={CalendarScreen}
-        options={{ 
-          headerTitle: 'Slides', 
+        options={{
+          headerTitle: 'Calendrier',
           headerStyle: {
             backgroundColor: '#30475e'
           },
