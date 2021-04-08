@@ -38,8 +38,12 @@ function LoginComponent() {
         setUserToken(data.signin.token);
       }
   }, [loading, error, data])
-        
 
+  function tranformEmail(email:string) {
+      email = email.toLowerCase();
+      email = email.trim();
+      setEmail(email);
+  }
   return (
       <View style={styles.container}>
         <Text style={styles.title}>SCHOOL ME HOME</Text>
@@ -47,7 +51,7 @@ function LoginComponent() {
           <TextInput 
             style={styles.mail} 
             placeholder="Adresse mail "
-            onChangeText={email => setEmail(email) }
+            onChangeText={email => tranformEmail(email)}
             placeholderTextColor="black">
           </TextInput>
           <TextInput 
