@@ -7,7 +7,7 @@ import { Text, View } from '../components/Themed';
 import { gql, useQuery } from '@apollo/client'
 import {useMutation} from '@apollo/react-hooks'
 import ProfilComponent from './ProfilComponent';
-import { UserContext } from '../context/userContext';
+import { useUser } from '../context/userContext';
 function LoginComponent() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -26,7 +26,7 @@ function LoginComponent() {
   console.log(email)
   console.log(password)
 
-  const {userEmail, setUserEmail} = React.useContext(UserContext);
+  const {userEmail, setUserEmail} = useUser();
   const [signin, {data, loading, error }] = useMutation(LOGIN);
   
   useEffect(() => {

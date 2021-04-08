@@ -13,6 +13,7 @@ import WikiDetail from "../screens/WikiDetail";
 import ProfilScreen from '../screens/ProfilScreen';
 
 import SlidesViewScreen from '../screens/SlidesViewScreen';
+import EditProfil from '../screens/EditProfil';
 
 
 
@@ -94,6 +95,7 @@ function ProfilNavigator() {
       }
     }} >
       <ProfilStack.Screen name="ProfilScreen" component={ProfilScreen} options={{ headerTitle: 'Mon profil'}} />
+      <ProfilStack.Screen name="EditProfil" component={EditProfil} options={{headerTitle: 'Editer mon profil'}}/>
     </ProfilStack.Navigator>
   );
 }
