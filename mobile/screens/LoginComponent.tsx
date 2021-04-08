@@ -1,12 +1,13 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { Button, StyleSheet, Image } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 
 import { Text, View } from '../components/Themed';
-import { gql, useQuery } from '@apollo/client'
+import { gql } from '@apollo/client'
 import {useMutation} from '@apollo/react-hooks'
-import ProfilComponent from './ProfilComponent';
+import { useUser } from '../context/userContext';
+import { AuthContext } from '../context/AuthContext';
 function LoginComponent() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -15,24 +16,28 @@ function LoginComponent() {
     mutation signIn($email: String!, $password: String!){
       signIn(email: $email, password: $password){
         user{
+          email,
           firstName, 
           role
         }, 
         token
       }
     }`;
-  console.log(email)
-  console.log(password)
 
+  const {setUserEmail} = useUser();
 
+  const {setUserToken} = React.useContext(AuthContext);
   const [signin, {data, loading, error }] = useMutation(LOGIN);
   
-        if (loading) {console.log(loading)};
+  useEffect(() => {
+    if (loading) {console.log(loading)};
         if (error) {console.log(error)}
       if (data) {
-        console.log(data.signIn);
+        setUserEmail(data.signIn.user.email);
+        setUserToken(data.signIn.token);
       }
-
+  }, [loading, error, data])
+        
 
   return (
       <View style={styles.container}>
@@ -53,9 +58,6 @@ function LoginComponent() {
           </TextInput>
           <Button color="#f05454" title="Connexion" onPress={() => signin({variables: {email: email, password: password}})}  />
         <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-        <Text>Rôle : {data && data.signIn.user.role}</Text>
-        <Text>Prénom : {data && data.signIn.user.firstName}</Text>
-        <Text>Token : {data && data.signIn.token}</Text>
       </View>
   );
   }
