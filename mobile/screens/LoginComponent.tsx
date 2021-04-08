@@ -13,8 +13,8 @@ function LoginComponent() {
   const [password, setPassword] = useState('');
 
   const LOGIN = gql`
-    mutation signIn($email: String!, $password: String!){
-      signIn(email: $email, password: $password){
+    mutation signin($email: String!, $password: String!){
+      signin(email: $email, password: $password){
         user{
           email,
           firstName, 
@@ -31,10 +31,11 @@ function LoginComponent() {
   
   useEffect(() => {
     if (loading) {console.log(loading)};
-        if (error) {console.log(error)}
+        if (error) {console.log(JSON.stringify(error, null, 4))}
       if (data) {
-        setUserEmail(data.signIn.user.email);
-        setUserToken(data.signIn.token);
+        console.log(data)
+        setUserEmail(data.signin.user.email);
+        setUserToken(data.signin.token);
       }
   }, [loading, error, data])
         
