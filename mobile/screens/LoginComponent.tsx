@@ -13,8 +13,8 @@ function LoginComponent() {
   const [password, setPassword] = useState('');
 
   const LOGIN = gql`
-    mutation signIn($email: String!, $password: String!){
-      signIn(email: $email, password: $password){
+    mutation signin($email: String!, $password: String!){
+      signin(email: $email, password: $password){
         user{
           email,
           firstName, 
@@ -31,14 +31,19 @@ function LoginComponent() {
   
   useEffect(() => {
     if (loading) {console.log(loading)};
-        if (error) {console.log(error)}
+        if (error) {console.log(JSON.stringify(error, null, 4))}
       if (data) {
-        setUserEmail(data.signIn.user.email);
-        setUserToken(data.signIn.token);
+        console.log(data)
+        setUserEmail(data.signin.user.email);
+        setUserToken(data.signin.token);
       }
   }, [loading, error, data])
-        
 
+  function tranformEmail(email:string) {
+      email = email.toLowerCase();
+      email = email.trim();
+      setEmail(email);
+  }
   return (
       <View style={styles.container}>
         <Text style={styles.title}>SCHOOL ME HOME</Text>
@@ -46,7 +51,7 @@ function LoginComponent() {
           <TextInput 
             style={styles.mail} 
             placeholder="Adresse mail "
-            onChangeText={email => setEmail(email) }
+            onChangeText={email => tranformEmail(email)}
             placeholderTextColor="black">
           </TextInput>
           <TextInput 
