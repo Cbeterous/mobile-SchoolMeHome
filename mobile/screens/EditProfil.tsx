@@ -82,9 +82,9 @@ export default function EditProfil({navigation}: any){
                 <Text>Nom :</Text>
                 <TextInput value={state.lastName} onChangeText={value => dispatch({type: 'name', value : value})}/>
                 <Text>Prénom :</Text>
-                <TextInput value={state.firsName} onChangeText={value => dispatch({type: 'firstname', value : value})}/>
+                <TextInput value={state.firstName} onChangeText={value => dispatch({type: 'firstname', value : value})}/>
                 <Text>Téléphone :</Text>
-                <TextInput value={state.phone} onChangeText={value => dispatch({type: 'phone', value : value})}/>
+                <TextInputMask type={'custom'} options={{mask: '99.99.99.99.99'}} value={state.phone} onChangeText={value => dispatch({type: 'phone', value : value})}></TextInputMask>
                 <Text>Date d'anniversaire :</Text>
                 <TextInputMask type={'datetime'} options={{format: 'DD/MM/YYYY'}} value={state.birthdate} onChangeText={value => {dispatch({type: 'birth', value : value})}}></TextInputMask>
                 <Text>Rue :</Text>
