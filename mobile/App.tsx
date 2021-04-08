@@ -8,10 +8,11 @@ import Navigation from './navigation';
 import { AppRegistry } from 'react-native';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { UserProvider} from './context/userContext';
+import { AuthProvider } from './context/AuthContext';
 
 export default function App() {
   const client = new ApolloClient({
-    uri: 'http://192.168.1.20:4300/graphql',
+    uri: 'http://192.168.1.13:4300/graphql',
     cache: new InMemoryCache()
   });
   const isLoadingComplete = useCachedResources();
@@ -23,9 +24,11 @@ export default function App() {
     return (
       <ApolloProvider client={client}>
         <SafeAreaProvider>
-          <UserProvider>
-            <Navigation colorScheme={colorScheme} />
-          </UserProvider>
+          <AuthProvider>
+            <UserProvider>
+              <Navigation colorScheme={colorScheme} />
+            </UserProvider>
+          </AuthProvider>
           <StatusBar />
         </SafeAreaProvider>
       </ApolloProvider>
