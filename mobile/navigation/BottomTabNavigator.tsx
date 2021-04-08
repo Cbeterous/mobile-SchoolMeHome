@@ -13,6 +13,7 @@ import WikiDetail from "../screens/WikiDetail";
 import ProfilScreen from '../screens/ProfilScreen';
 import SlidesViewScreen from '../screens/SlidesViewScreen';
 import CalendarScreen from '../screens/CalendarScreen';
+import EditProfil from '../screens/EditProfil';
 
 
 
@@ -23,15 +24,8 @@ export default function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="Login"
+      initialRouteName="Profil"
       tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
-      <BottomTab.Screen
-        name="Login"
-        component={LoginNavigator}
-        options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-home-outline" color={color} />,
-        }}
-      />
       <BottomTab.Screen
         name="Profil"
         component={ProfilNavigator}
@@ -100,7 +94,8 @@ function ProfilNavigator() {
         textTransform: 'capitalize',
       }
     }} >
-      <ProfilStack.Screen name="ProfilScreen" component={ProfilScreen} options={{ headerTitle: 'Mon profil' }} />
+      <ProfilStack.Screen name="ProfilScreen" component={ProfilScreen} options={{ headerTitle: 'Mon profil'}} />
+      <ProfilStack.Screen name="EditProfil" component={EditProfil} options={{headerTitle: 'Editer mon profil'}}/>
     </ProfilStack.Navigator>
   );
 }

@@ -2,6 +2,8 @@ import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 import { ColorSchemeName } from 'react-native';
+import { AuthContext, AuthProvider } from '../context/AuthContext';
+import LoginComponent from '../screens/LoginComponent';
 
 import NotFoundScreen from '../screens/NotFoundScreen';
 import { RootStackParamList } from '../types';
@@ -25,10 +27,17 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
 const Stack = createStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
+  const {userToken} = React.useContext(AuthContext);
+  
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Root" component={BottomTabNavigator} />
-      <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+      {userToken === null ? (
+        <Stack.Screen name="Login" component={LoginComponent} />
+      ) : (
+        <Stack.Screen name="Root" component={BottomTabNavigator} />
+      )}
+      {/* <Stack.Screen name="Root" component={BottomTabNavigator} />
+      <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} /> */}
     </Stack.Navigator>
   );
 }
