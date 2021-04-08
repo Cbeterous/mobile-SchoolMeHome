@@ -69,7 +69,6 @@ export default function EditProfil({navigation}: any){
 
     const submit = () => {
         
-        console.log(state);
         updateUser({variables : {data : {...state, __typename : undefined}}})
             .then(() => navigation.push('ProfilScreen'))
             .catch(e => console.log(JSON.stringify(e, null, 4)))    

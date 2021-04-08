@@ -23,10 +23,8 @@ export default function ProfilScreen({navigation} : any) {
     
   const {data, loading, error } = useQuery(GET_USER, {variables : {email :userEmail}});
   useEffect(() => {
-    console.log('test rendu page');
     if(userEmail){
       if(data){
-        console.log(data);
         setUser(data.getOne)
       }
     }
@@ -133,14 +131,11 @@ export default function ProfilScreen({navigation} : any) {
                     </Text></ListItem.Content> 
                   </ListItem>
                   <Icon 
-                    reverse
-                    reverseColor="#fff"
-                    size={16}
-                    iconStyle={{fontSize: 18}}
-                    containerStyle={{position: 'absolute', right: -32, top : -32}}
-                    name='pen' 
-                    type='font-awesome-5' 
-                    color="#f05454" 
+                    iconStyle={{fontSize: 30}}
+                    containerStyle={{position: 'absolute', right: -15, top : -15}}
+                    name='add-circle-outline' 
+                    type='ionicon' 
+                    color="#f05454"
                     onPress={() => {
                       navigation.push('EditProfil')
                     }}/>
