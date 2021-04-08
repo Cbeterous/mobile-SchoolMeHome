@@ -79,7 +79,8 @@ export default function ProfilScreen({navigation} : any) {
         <ImageBackground source={require('../assets/images/profilBG.png')} style={styles.imageBG}>
             <ScrollView >
                 <Avatar containerStyle={{ alignSelf: 'center'}} rounded source={{ uri : avatar}} size='xlarge'>
-                  <Avatar.Accessory style={{backgroundColor: "#f05454"}} size={36} onPress={() => refRBSheet.current?.open()}/>
+                  <Avatar.Accessory name='camera' 
+                    type='font-awesome-5' style={{backgroundColor: "#f05454"}} iconStyle={{fontSize: 20}} size={36} onPress={() => refRBSheet.current?.open()}/>
                 </Avatar>
                 <RBSheet
                   height={170}
@@ -108,32 +109,35 @@ export default function ProfilScreen({navigation} : any) {
                     </ListItem.Content>
                   </ListItem>
                 </RBSheet>
-                <Text style={styles.title}>{user ? user.firstName : 'Maxime'} {user ? user.lastName : 'BERTHOLD'} </Text>
+                <Text style={styles.title}>{user ? user.firstName : ''} {user ? user.lastName : ''} </Text>
                 <Text style={styles.promo}>L1 front React | Groupe 1</Text>
                 <Card containerStyle={styles.cardBox}>
                   <Card.Title style={styles.title}>Mes informations personnelles</Card.Title>
                   <Card.Divider />
                   <ListItem containerStyle={{ backgroundColor:'#233445' }}>
                     <Entypo name="mail" size={16} color="#f05454"/>
-                    <ListItem.Content><Text style={styles.whiteText}>{user ? user.email : 'm.bertold@schoolmehome.fr'}</Text></ListItem.Content> 
+                    <ListItem.Content><Text style={styles.whiteText}>{user ? user.email : ''}</Text></ListItem.Content> 
                   </ListItem>
                   <ListItem containerStyle={{ backgroundColor:'#233445' }}>
                     <FontAwesome name="phone" size={16} color="#f05454" />
-                    <ListItem.Content><Text style={styles.whiteText}>{user ? user.phone :'O1.O2.03.04.05'}</Text></ListItem.Content> 
+                    <ListItem.Content><Text style={styles.whiteText}>{user ? user.phone :''}</Text></ListItem.Content> 
                   </ListItem>
                   <ListItem containerStyle={{ backgroundColor:'#233445' }}>
                     <FontAwesome name="birthday-cake" size={16} color="#f05454" />
-                    <ListItem.Content><Text style={styles.whiteText}>{user ? user.birthdate :'1 janv 1990'}</Text></ListItem.Content> 
+                    <ListItem.Content><Text style={styles.whiteText}>{user ? user.birthdate :''}</Text></ListItem.Content> 
                   </ListItem>
                   <ListItem containerStyle={{ backgroundColor:'#233445' }}>
                     <Entypo name="location-pin" size={16} color="#f05454" />
                     <ListItem.Content><Text style={styles.whiteText}>
-                    {user ? user.street :'1 place des cerises'} {user ? user.zipcode : '99000'} {user ? user.city : 'JARDIN'} 
+                    {user ? user.street :'1 place des cerises'} {user ? user.zipcode : ''} {user ? user.city : ''} 
                     </Text></ListItem.Content> 
                   </ListItem>
                   <Icon 
                     reverse
                     reverseColor="#fff"
+                    size={16}
+                    iconStyle={{fontSize: 18}}
+                    containerStyle={{position: 'absolute', right: -32, top : -32}}
                     name='pen' 
                     type='font-awesome-5' 
                     color="#f05454" 
@@ -178,6 +182,7 @@ const styles = StyleSheet.create({
 
   title: {
     alignSelf: 'center',
+    padding: 1,
     fontSize: 20,
     fontWeight: 'bold',
     color: '#fff',
