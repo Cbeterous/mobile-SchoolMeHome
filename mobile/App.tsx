@@ -11,7 +11,7 @@ import { UserContext, UserProvider} from './context/userContext';
 
 export default function App() {
   const client = new ApolloClient({
-    uri: 'http://192.168.1.20:4300/graphql',
+    uri: 'http://192.168.1.13:4300/graphql',
     cache: new InMemoryCache()
   });
   const isLoadingComplete = useCachedResources();
