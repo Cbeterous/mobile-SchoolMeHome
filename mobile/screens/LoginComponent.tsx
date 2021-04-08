@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
-import { Button, StyleSheet, Image } from 'react-native';
+import { Button, StyleSheet, Image,  } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 
 import { Text, View } from '../components/Themed';
@@ -34,10 +34,10 @@ function LoginComponent() {
     if (loading) {console.log(loading)};
         if (error) {console.log(error)}
       if (data) {
-        setUserEmail(data.signIn.user.email);
-        console.log('setting token ' + data.signIn.token);
-        setUserToken(data.signIn.token);
-        console.log()
+        console.log(data)
+        setUserEmail(data.signin.user.email);
+        setUserToken(data.signin.token);
+        AsyncStorage
       }
   }, [loading, error, data])
         
@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: 'white'
   },
   title: {
     fontSize: 30,
