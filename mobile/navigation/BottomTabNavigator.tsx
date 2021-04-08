@@ -57,7 +57,7 @@ export default function BottomTabNavigator() {
         name="Calendrier"
         component={CalendarNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-copy-outline" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="ios-calendar-sharp" color={color} />,
         }}
       />
     </BottomTab.Navigator>

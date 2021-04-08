@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, ActivityIndicator } from 'react-native';
 import { LocaleConfig, Agenda } from 'react-native-calendars';
 import { Provider as PaperProvider, Card, Title, Paragraph, Menu, Button, DefaultTheme } from "react-native-paper";
-import moment from 'moment'
+import moment from 'moment';
+import { gql, useQuery } from '@apollo/client';
 
 LocaleConfig.locales['fr'] = {
   monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
@@ -20,101 +21,71 @@ type Lesson = {
   promo: string;
 }
 
-const data: Lesson[] = [{
-  start: '2021-04-07 09:00:00',
-  end: '2021-04-07 10:00:00',
-  subject: { name: 'React Native' },
-  promo: 'WnS Lyon'
-},
-{
-  start: '2021-04-07 08:00:00',
-  end: '2021-04-07 09:00:00',
-  subject: { name: 'React' },
-  promo: 'WnS Strasbourg'
-},
-{
-  start: '2021-04-24 09:00:00',
-  end: '2021-04-24 10:00:00',
-  subject: { name: 'PHP' },
-  promo: 'WnS Lyon'
-},{
-  start: '2021-04-22 09:00:00',
-  end: '2021-04-22 10:00:00',
-  subject: { name: 'React Native' },
-  promo: 'WnS Lyon'
-},
-{
-  start: '2021-04-22 08:00:00',
-  end: '2021-04-22 09:00:00',
-  subject: { name: 'React' },
-  promo: 'WnS Strasbourg'
-},
-{
-  start: '2021-04-24 09:00:00',
-  end: '2021-04-24 10:00:00',
-  subject: { name: 'PHP' },
-  promo: 'WnS Lyon'
-},{
-  start: '2021-04-22 09:00:00',
-  end: '2021-04-22 10:00:00',
-  subject: { name: 'React Native' },
-  promo: 'WnS Lyon'
-},
-{
-  start: '2021-04-22 08:00:00',
-  end: '2021-04-22 09:00:00',
-  subject: { name: 'React' },
-  promo: 'WnS Strasbourg'
-},
-{
-  start: '2021-04-24 09:00:00',
-  end: '2021-04-24 10:00:00',
-  subject: { name: 'PHP' },
-  promo: 'WnS Lyon'
-}]
+type Item = {
+  name: string;
+  start: string;
+  end: string;
+  promo: string;
+}
 
-
-const renderItem = (item: any) => {
-
+const renderItem = (item: Item) => {
   return (
-      <Card style={styles.card}>
-        <Card.Content>
-          <Title>{moment(item.start).format('hh:mm')} à {moment(item.end).format('hh:mm')}</Title>
-          <Paragraph>{item.promo} / {item.name}</Paragraph>
-        </Card.Content>
-      </Card>
+    <Card style={styles.card}>
+      <Card.Content>
+        <Title>{moment(item.start).format('HH:mm')} à {moment(item.end).format('HH:mm')}</Title>
+        <Paragraph>{item.promo} / {item.name}</Paragraph>
+      </Card.Content>
+    </Card>
   )
 }
 
 const CalendarScreen = () => {
 
-  const [items, setItems] = useState<any>();
+  const GET_LESSONS = gql`
+    query { findAllLesson { start, end, promo, subject { name }}}
+`;
+
+  const { loading, error, data } = useQuery(GET_LESSONS);
+
+  const [items, setItems] = useState<Item | null>(null);
 
   useEffect(() => {
-    let toto: any = {};
-    data.forEach(d => {
-      const date: string = moment(d.start).format('YYYY-MM-DD') 
-      const samedate = Object.keys(toto).filter(t => t === date);
-      if (samedate.length > 0) {
-        toto = { ...toto, [date]: [...toto[date], { name: d.subject.name, start: d.start, end: d.end, promo: d.promo }].sort((a, b) => (a.start > b.start) ? 1 : ((b.start > a.start) ? -1 : 0)) }
-      } else {
-        toto = { ...toto, [date]: [{ name: d.subject.name, start: d.start, end: d.end, promo: d.promo }] }
-      }
-    })
 
-    setItems(toto)
+    if (data) {
+      let item: any = {};
+      data.findAllLesson.forEach((d: Lesson) => {
+        const date: string = moment(d.start).format('YYYY-MM-DD')
+        const samedate = Object.keys(item).filter(t => t === date);
+        if (samedate.length > 0) {
+          item = { ...item, [date]: [...item[date], { name: d.subject.name, start: d.start.slice(0,23), end: d.end.slice(0,23), promo: d.promo }].sort((a, b) => (a.start > b.start) ? 1 : ((b.start > a.start) ? -1 : 0)) }
+        } else {
+          item = { ...item, [date]: [{ name: d.subject.name, start: d.start.slice(0,23), end: d.end.slice(0,23), promo: d.promo }] }
+        }
+      })
+      setItems(item)
+    }
+  }, [data])
 
-  }, [])
 
+  if (loading) return (
+    <View style={[styles.container, styles.horizontal]}>
+      <ActivityIndicator size="large" color="#f05454" />
+    </View>
+  );
+  if (error) return <View><Text>Error! </Text></View>;
   if (items) {
     return (
       <Agenda
         items={items}
-        renderItem={(item: any) => renderItem(item)}
+        renderItem={(item: Item) => renderItem(item)}
       />
     )
   } else {
-    return <Text>Loading...</Text>
+    return (
+      <View style={[styles.container, styles.horizontal]}>
+      <ActivityIndicator size="large" color="#f05454" />
+    </View>
+    )
   }
 
 }
@@ -123,6 +94,23 @@ const styles = StyleSheet.create({
   card: {
     flex: 1,
     marginTop: 25
+  },
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  carousel: {
+    height: 440
+  },
+  horizontal: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: 10,
   }
 });
 
