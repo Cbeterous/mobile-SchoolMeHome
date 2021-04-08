@@ -23,15 +23,8 @@ export default function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="Login"
+      initialRouteName="Profil"
       tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
-      <BottomTab.Screen
-        name="Login"
-        component={LoginNavigator}
-        options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-home-outline" color={color} />,
-        }}
-      />
       <BottomTab.Screen
         name="Profil"
         component={ProfilNavigator}

@@ -8,6 +8,7 @@ import Navigation from './navigation';
 import { AppRegistry, Button, StyleSheet, Text, View } from 'react-native';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { UserContext, UserProvider} from './context/userContext';
+import { AuthProvider } from './context/AuthContext';
 
 export default function App() {
   const client = new ApolloClient({
@@ -23,9 +24,11 @@ export default function App() {
     return (
       <ApolloProvider client={client}>
         <SafeAreaProvider>
-          <UserProvider>
-            <Navigation colorScheme={colorScheme} />
-          </UserProvider>
+          <AuthProvider>
+            <UserProvider>
+              <Navigation colorScheme={colorScheme} />
+            </UserProvider>
+          </AuthProvider>
           <StatusBar />
         </SafeAreaProvider>
       </ApolloProvider>
