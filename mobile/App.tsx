@@ -1,18 +1,18 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
+import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
-import { AppRegistry, Button, StyleSheet, Text, View } from 'react-native';
+import { AppRegistry } from 'react-native';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
-import { UserContext, UserProvider} from './context/userContext';
+import { UserProvider} from './context/userContext';
 import { AuthProvider } from './context/AuthContext';
 
 export default function App() {
   const client = new ApolloClient({
-    uri: 'http://192.168.1.13:4300/graphql',
+    uri: 'http://192.168.1.15:4300/graphql',
     cache: new InMemoryCache()
   });
   const isLoadingComplete = useCachedResources();

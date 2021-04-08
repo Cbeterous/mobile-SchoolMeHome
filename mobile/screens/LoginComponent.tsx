@@ -4,18 +4,17 @@ import { Button, StyleSheet, Image,  } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 
 import { Text, View } from '../components/Themed';
-import { gql, useQuery } from '@apollo/client'
+import { gql } from '@apollo/client'
 import {useMutation} from '@apollo/react-hooks'
-import ProfilComponent from './ProfilComponent';
-import { UserContext } from '../context/userContext';
+import { useUser } from '../context/userContext';
 import { AuthContext } from '../context/AuthContext';
 function LoginComponent() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const LOGIN = gql`
-    mutation signIn($email: String!, $password: String!){
-      signIn(email: $email, password: $password){
+    mutation signin($email: String!, $password: String!){
+      signin(email: $email, password: $password){
         user{
           email,
           firstName, 
@@ -25,23 +24,26 @@ function LoginComponent() {
       }
     }`;
 
+  const {setUserEmail} = useUser();
 
-  const {setUserEmail} = React.useContext(UserContext);
   const {setUserToken} = React.useContext(AuthContext);
   const [signin, {data, loading, error }] = useMutation(LOGIN);
   
   useEffect(() => {
     if (loading) {console.log(loading)};
-        if (error) {console.log(error)}
+        if (error) {console.log(JSON.stringify(error, null, 4))}
       if (data) {
         console.log(data)
         setUserEmail(data.signin.user.email);
         setUserToken(data.signin.token);
-        AsyncStorage
       }
   }, [loading, error, data])
-        
 
+  function tranformEmail(email:string) {
+      email = email.toLowerCase();
+      email = email.trim();
+      setEmail(email);
+  }
   return (
       <View style={styles.container}>
         <Text style={styles.title}>SCHOOL ME HOME</Text>
@@ -49,7 +51,7 @@ function LoginComponent() {
           <TextInput 
             style={styles.mail} 
             placeholder="Adresse mail "
-            onChangeText={email => setEmail(email) }
+            onChangeText={email => tranformEmail(email)}
             placeholderTextColor="black">
           </TextInput>
           <TextInput 

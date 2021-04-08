@@ -3,15 +3,34 @@ import { ImageBackground, ScrollView,  StyleSheet, Platform } from 'react-native
 import { Text, View } from '../components/Themed';
 import { FontAwesome } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
-import { Avatar, Card, ListItem } from 'react-native-elements';
+import { Avatar, Card, ListItem, Icon } from 'react-native-elements';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import * as ImagePicker from 'expo-image-picker';
-import { UserContext } from '../context/userContext';
+import { useUser } from '../context/userContext';
+import { gql, useQuery } from '@apollo/client';
+import { User } from '../types';
 
 export default function ProfilScreen({navigation} : any) {
 
   const [avatar, setAvatar] = useState("https://randomuser.me/api/portraits/men/75.jpg");
-  const {userEmail} = React.useContext(UserContext);
+  const {userEmail} = useUser();
+  const [user, setUser] = useState<User>();
+  const GET_USER = gql`
+      query findUser($email: String!){
+        getOne(email : $email) {_id, firstName, lastName, email, phone, birthdate, street, zipcode, city}
+      }
+    `;
+    
+  const {data, loading, error } = useQuery(GET_USER, {variables : {email :userEmail}});
+  useEffect(() => {
+    console.log('test rendu page');
+    if(userEmail){
+      if(data){
+        console.log(data);
+        setUser(data.getOne)
+      }
+    }
+  })
 
   const pickImage = async () => {
     (async () => {
@@ -35,22 +54,22 @@ export default function ProfilScreen({navigation} : any) {
     if (!result.cancelled) {
         setAvatar(result.uri);
     }
-};
+  };
 
-const takeImage = async () => {
-    let result = await ImagePicker.launchCameraAsync({
-        allowsEditing : true,
-        quality: 1,
-        aspect: [4,3],
-    })
+  const takeImage = async () => {
+      let result = await ImagePicker.launchCameraAsync({
+          allowsEditing : true,
+          quality: 1,
+          aspect: [4,3],
+      })
 
-    console.log(result);
-    refRBSheet.current?.close()
+      console.log(result);
+      refRBSheet.current?.close()
 
-    if (!result.cancelled) {
-        setAvatar(result.uri);
-    }
-}
+      if (!result.cancelled) {
+          setAvatar(result.uri);
+      }
+  }
 
   const refRBSheet = useRef<RBSheet | null>(null);
 
@@ -60,7 +79,8 @@ const takeImage = async () => {
         <ImageBackground source={require('../assets/images/profilBG.png')} style={styles.imageBG}>
             <ScrollView >
                 <Avatar containerStyle={{ alignSelf: 'center'}} rounded source={{ uri : avatar}} size='xlarge'>
-                  <Avatar.Accessory style={{backgroundColor: "#f05454"}} size={36} onPress={() => refRBSheet.current?.open()}/>
+                  <Avatar.Accessory name='camera' 
+                    type='font-awesome-5' style={{backgroundColor: "#f05454"}} iconStyle={{fontSize: 20}} size={36} onPress={() => refRBSheet.current?.open()}/>
                 </Avatar>
                 <RBSheet
                   height={170}
@@ -89,29 +109,41 @@ const takeImage = async () => {
                     </ListItem.Content>
                   </ListItem>
                 </RBSheet>
-                <Text style={styles.title}>Maxime BERTHOLD</Text>
+                <Text style={styles.title}>{user ? user.firstName : ''} {user ? user.lastName : ''} </Text>
                 <Text style={styles.promo}>L1 front React | Groupe 1</Text>
                 <Card containerStyle={styles.cardBox}>
                   <Card.Title style={styles.title}>Mes informations personnelles</Card.Title>
                   <Card.Divider />
                   <ListItem containerStyle={{ backgroundColor:'#233445' }}>
                     <Entypo name="mail" size={16} color="#f05454"/>
-                    <ListItem.Content><Text style={styles.whiteText}>m.bertold@schoolmehome.fr</Text></ListItem.Content> 
+                    <ListItem.Content><Text style={styles.whiteText}>{user ? user.email : ''}</Text></ListItem.Content> 
                   </ListItem>
                   <ListItem containerStyle={{ backgroundColor:'#233445' }}>
                     <FontAwesome name="phone" size={16} color="#f05454" />
-                    <ListItem.Content><Text style={styles.whiteText}>O1.O2.03.04.05</Text></ListItem.Content> 
+                    <ListItem.Content><Text style={styles.whiteText}>{user ? user.phone :''}</Text></ListItem.Content> 
                   </ListItem>
                   <ListItem containerStyle={{ backgroundColor:'#233445' }}>
                     <FontAwesome name="birthday-cake" size={16} color="#f05454" />
-                    <ListItem.Content><Text style={styles.whiteText}>1 janv 1990</Text></ListItem.Content> 
+                    <ListItem.Content><Text style={styles.whiteText}>{user ? user.birthdate :''}</Text></ListItem.Content> 
                   </ListItem>
                   <ListItem containerStyle={{ backgroundColor:'#233445' }}>
                     <Entypo name="location-pin" size={16} color="#f05454" />
-                    <ListItem.Content><Text style={styles.whiteText}>1 place des cerises
-                    99000 JARDIN</Text></ListItem.Content> 
+                    <ListItem.Content><Text style={styles.whiteText}>
+                    {user ? user.street :'1 place des cerises'} {user ? user.zipcode : ''} {user ? user.city : ''} 
+                    </Text></ListItem.Content> 
                   </ListItem>
-                  
+                  <Icon 
+                    reverse
+                    reverseColor="#fff"
+                    size={16}
+                    iconStyle={{fontSize: 18}}
+                    containerStyle={{position: 'absolute', right: -32, top : -32}}
+                    name='pen' 
+                    type='font-awesome-5' 
+                    color="#f05454" 
+                    onPress={() => {
+                      navigation.push('EditProfil')
+                    }}/>
                 </Card>
 
                 <Card containerStyle={styles.cardBox}>
@@ -150,6 +182,7 @@ const styles = StyleSheet.create({
 
   title: {
     alignSelf: 'center',
+    padding: 1,
     fontSize: 20,
     fontWeight: 'bold',
     color: '#fff',
