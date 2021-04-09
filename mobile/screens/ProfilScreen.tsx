@@ -141,8 +141,8 @@ async function  getToken(){
                   <Icon 
                     iconStyle={{fontSize: 30}}
                     containerStyle={{position: 'absolute', right: -15, top : -15}}
-                    name='add-circle-outline' 
-                    type='ionicon' 
+                    name='plus-circle' 
+                    type='font-awesome-5' 
                     color="#f05454"
                     onPress={() => {
                       navigation.push('EditProfil')
