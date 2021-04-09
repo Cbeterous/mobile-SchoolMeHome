@@ -40,7 +40,6 @@ const renderItem = (item: Item) => {
 }
 
 const CalendarScreen = () => {
-
   const GET_LESSONS = gql`
     query { findAllLesson { start, end, promo, subject { name }}}
 `;
@@ -52,6 +51,7 @@ const CalendarScreen = () => {
   useEffect(() => {
 
     if (data) {
+      console.log(data)
       let item: any = {};
       data.findAllLesson.forEach((d: Lesson) => {
         const date: string = moment(d.start).format('YYYY-MM-DD')
