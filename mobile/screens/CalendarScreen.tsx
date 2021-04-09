@@ -57,9 +57,9 @@ const CalendarScreen = () => {
         const date: string = moment(d.start).format('YYYY-MM-DD')
         const samedate = Object.keys(item).filter(t => t === date);
         if (samedate.length > 0) {
-          item = { ...item, [date]: [...item[date], { name: d.subject.name, start: moment.parseZone(d.start).local(true).format(), end: moment.parseZone(d.end).local(true).format(), promo: d.promo }].sort((a, b) => (a.start > b.start) ? 1 : ((b.start > a.start) ? -1 : 0)) }
+          item = { ...item, [date]: [...item[date], { name: d.subject.name, start: d.start, end: d.end, promo: d.promo }].sort((a, b) => (a.start > b.start) ? 1 : ((b.start > a.start) ? -1 : 0)) }
         } else {
-          item = { ...item, [date]: [{ name: d.subject.name, start: moment.parseZone(d.start).local(true).format(), end: moment.parseZone(d.end).local(true).format(), promo: d.promo }] }
+          item = { ...item, [date]: [{ name: d.subject.name, start: d.start, end: d.end, promo: d.promo }] }
         }
       })
       setItems(item)
