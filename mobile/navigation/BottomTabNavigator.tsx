@@ -90,12 +90,11 @@ function ProfilNavigator() {
       },
       headerTintColor: '#fff',
       headerTitleStyle: {
-        fontWeight: 'bold',
-        textTransform: 'capitalize',
+        fontWeight: 'bold'
       }
     }} >
-      <ProfilStack.Screen name="ProfilScreen" component={ProfilScreen} options={{ headerTitle: 'Mon profil'}} />
-      <ProfilStack.Screen name="EditProfil" component={EditProfil} options={{headerTitle: 'Editer mon profil'}}/>
+      <ProfilStack.Screen name="ProfilScreen" component={ProfilScreen} options={{ headerTitle: 'Mon profil' }} />
+      <ProfilStack.Screen name="EditProfil" component={EditProfil} options={{ headerTitle: 'Editer mon profil' }} />
     </ProfilStack.Navigator>
   );
 }
@@ -114,7 +113,8 @@ function SlidesViewNavigator() {
             backgroundColor: '#30475e'
           },
           headerTitleStyle: {
-            color: '#f05454',
+            color: '#fff',
+            fontWeight: 'bold'
           }
         }}
       />
@@ -132,8 +132,7 @@ function WikiNavigator() {
       },
       headerTintColor: '#fff',
       headerTitleStyle: {
-        fontWeight: 'bold',
-        textTransform: 'capitalize',
+        fontWeight: 'bold'
       }
     }} >
       <WikiStack.Screen name="Wiki" component={WikiList} options={{ headerTitle: 'Mon Wiki' }} />
@@ -156,7 +155,8 @@ function CalendarNavigator() {
             backgroundColor: '#30475e'
           },
           headerTitleStyle: {
-            color: '#f05454',
+            color: '#fff',
+            fontWeight: 'bold'
           }
         }}
       />
