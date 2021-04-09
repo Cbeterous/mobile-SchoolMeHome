@@ -45,8 +45,10 @@ export default function SlidesViewScreen() {
 
   useEffect(() => {
     if (data) {
-      setPresentation(data.findAllPresentation)
-      setSelectedPres(data.findAllPresentation[0]._id)
+      if (data.findAllPresentation.length > 0) {
+        setPresentation(data.findAllPresentation)
+        setSelectedPres(data.findAllPresentation[0]._id)
+      }
     }
   }, [data])
 
@@ -77,11 +79,6 @@ export default function SlidesViewScreen() {
     </View>
   );
   if (error) return <View><Text>Error! </Text></View>;
-  if (presentation.length === 0) return (
-    <View style={[styles.container, styles.horizontal]}>
-      <ActivityIndicator size="large" color="#f05454" />
-    </View>
-  ) 
   if (presentation.length > 0) {
     return (
       <PaperProvider >
@@ -131,7 +128,7 @@ export default function SlidesViewScreen() {
       </PaperProvider>
     );
   }
-  return <View><Text>ttt </Text></View>;
+  return <View><Text> Aucun Présentation sur votre espace </Text></View>;
 }
 
 const styles = StyleSheet.create({

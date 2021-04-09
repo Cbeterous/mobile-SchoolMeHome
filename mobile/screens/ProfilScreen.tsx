@@ -9,6 +9,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { useUser } from '../context/userContext';
 import { gql, useQuery } from '@apollo/client';
 import { User } from '../types';
+import * as SecureStore from 'expo-secure-store';
 
 export default function ProfilScreen({navigation} : any) {
 
@@ -23,12 +24,19 @@ export default function ProfilScreen({navigation} : any) {
     
   const {data, loading, error } = useQuery(GET_USER, {variables : {email :userEmail}});
   useEffect(() => {
+    // console.log('test rendu page');
     if(userEmail){
       if(data){
-        setUser(data.getOne)
+        setUser(data.getOne);
+        getToken(); 
       }
     }
   })
+
+async function  getToken(){
+    let result = await SecureStore.getItemAsync('userToken');
+    console.log(result + " result");
+  }
 
   const pickImage = async () => {
     (async () => {

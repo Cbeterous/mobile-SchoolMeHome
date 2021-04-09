@@ -8,6 +8,9 @@ import { gql } from '@apollo/client'
 import {useMutation} from '@apollo/react-hooks'
 import { useUser } from '../context/userContext';
 import { AuthContext } from '../context/AuthContext';
+import * as SecureStore from 'expo-secure-store';
+
+
 function LoginComponent() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -33,12 +36,16 @@ function LoginComponent() {
     if (loading) {console.log(loading)};
         if (error) {console.log(JSON.stringify(error, null, 4))}
       if (data) {
-        console.log(data)
         setUserEmail(data.signin.user.email);
         setUserToken(data.signin.token);
+        SecureStore.setItemAsync('userToken', data.signin.token);
       }
   }, [loading, error, data])
 
+  // async function  test(){
+  //   let result = await SecureStore.getItemAsync('userToken');
+  //   console.log(result + " result");
+  // }
   function tranformEmail(email:string) {
       email = email.toLowerCase();
       email = email.trim();
