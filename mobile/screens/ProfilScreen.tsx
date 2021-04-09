@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ImageBackground, ScrollView,  StyleSheet, Platform } from 'react-native';
+import { ImageBackground, ScrollView,  StyleSheet, Platform, Image } from 'react-native';
 import { Text, View } from '../components/Themed';
 import { FontAwesome } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
@@ -152,11 +152,42 @@ async function  getToken(){
                 <Card containerStyle={styles.cardBox}>
                   <Card.Title style={styles.title}>Mes centres d'intérêts</Card.Title>
                   <Card.Divider/>
+                  <ListItem containerStyle={{ backgroundColor:'#233445' }}>
+                    <Image style={styles.img} source={require('../assets/images/videogames.png')} />
+                    <ListItem.Content><Text style={styles.whiteText}>Jeux vidéos</Text></ListItem.Content> 
+                  </ListItem>
+                  <ListItem containerStyle={{ backgroundColor:'#233445' }}>
+                    <Image style={styles.img} source={require('../assets/images/study.png')} />
+                    <ListItem.Content><Text style={styles.whiteText}>Lecture</Text></ListItem.Content> 
+                  </ListItem>
+                  <ListItem containerStyle={{ backgroundColor:'#233445' }}>
+                    <Image style={styles.img} source={require('../assets/images/puzzle-pieces.png')} />
+                    <ListItem.Content><Text style={styles.whiteText}>Puzzle</Text></ListItem.Content> 
+                  </ListItem>
                 </Card>
 
                 <Card containerStyle={styles.cardBox}>
                   <Card.Title style={styles.title}>Mes notes</Card.Title>
                   <Card.Divider/>
+                  <View style={styles.column}>
+                    <ListItem containerStyle={{ backgroundColor:'#233445' }} style={styles.item}>
+                      <Image style={styles.img} source={require('../assets/images/book.png')} />
+                      <ListItem.Content><Text style={styles.whiteText}>18 / 20</Text></ListItem.Content> 
+                    </ListItem>
+                    <ListItem containerStyle={{ backgroundColor:'#233445' }} style={styles.item}>
+                      <Image style={styles.img} source={require('../assets/images/ruler.png')} />
+                      <ListItem.Content><Text style={styles.whiteText}>17 / 20</Text></ListItem.Content> 
+                    </ListItem>
+                    <ListItem containerStyle={{ backgroundColor:'#233445' }} style={styles.item}>
+                      <Image style={styles.img} source={require('../assets/images/microscope.png')} />
+                      <ListItem.Content><Text style={styles.whiteText}>20 / 20</Text></ListItem.Content> 
+                    </ListItem>
+                    <ListItem containerStyle={{ backgroundColor:'#233445' }} style={styles.item}>
+                      <Image style={styles.img} source={require('../assets/images/flute.png')} />
+                      <ListItem.Content><Text style={styles.whiteText}>1 / 20</Text></ListItem.Content> 
+                    </ListItem>
+                  </View>
+                  
                 </Card>
             </ScrollView>
         </ImageBackground>
@@ -211,4 +242,17 @@ const styles = StyleSheet.create({
   mgBot : {
     marginBottom: 16,
   },
+  img : {
+    width : 30,
+    height : 30,
+  },
+  column : {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'flex-start'
+  },
+  item: {
+    width: '50%'
+  }
 });

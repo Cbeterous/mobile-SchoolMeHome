@@ -128,7 +128,7 @@ export default function SlidesViewScreen() {
       </PaperProvider>
     );
   }
-  return <View><Text> Aucun Présentation sur votre espace </Text></View>;
+  return <View style={styles.container}><Text> Aucun Présentation sur votre espace </Text></View>;
 }
 
 const styles = StyleSheet.create({
