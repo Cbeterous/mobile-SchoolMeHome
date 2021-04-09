@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
-import { Button, StyleSheet, Image } from 'react-native';
+import { Button, StyleSheet, Image,  } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 
 import { Text, View } from '../components/Themed';
@@ -8,6 +8,9 @@ import { gql } from '@apollo/client'
 import {useMutation} from '@apollo/react-hooks'
 import { useUser } from '../context/userContext';
 import { AuthContext } from '../context/AuthContext';
+import * as SecureStore from 'expo-secure-store';
+
+
 function LoginComponent() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -30,13 +33,19 @@ function LoginComponent() {
   const [signin, {data, loading, error }] = useMutation(LOGIN);
   
   useEffect(() => {
+    console.log(data)
     if (loading) {console.log(loading)};
-        if (error) {console.log(JSON.stringify(error, null, 4))}
-      if (data) {
-        console.log(data)
+    if (error) {console.log(error)}
+    if (data != undefined){
+      if (data.signin != null) {
         setUserEmail(data.signin.user.email);
         setUserToken(data.signin.token);
-      }
+        SecureStore.setItemAsync('userToken', data.signin.token);
+      }else{
+        alert("L'adresse mail ou le mot de passe est incorrect !")
+    }
+    }
+
   }, [loading, error, data])
 
   function tranformEmail(email:string) {
@@ -65,7 +74,8 @@ function LoginComponent() {
         <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       </View>
   );
-  }
+
+}
 
 
 const styles = StyleSheet.create({
@@ -73,6 +83,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: 'white'
   },
   title: {
     fontSize: 30,

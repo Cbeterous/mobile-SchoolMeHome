@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ImageBackground, ScrollView,  StyleSheet, Platform } from 'react-native';
+import { ImageBackground, ScrollView,  StyleSheet, Platform, Image } from 'react-native';
 import { Text, View } from '../components/Themed';
 import { FontAwesome } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
@@ -9,6 +9,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { useUser } from '../context/userContext';
 import { gql, useQuery } from '@apollo/client';
 import { User } from '../types';
+import * as SecureStore from 'expo-secure-store';
 
 export default function ProfilScreen({navigation} : any) {
 
@@ -23,14 +24,18 @@ export default function ProfilScreen({navigation} : any) {
     
   const {data, loading, error } = useQuery(GET_USER, {variables : {email :userEmail}});
   useEffect(() => {
-    console.log('test rendu page');
+    // console.log('test rendu page');
     if(userEmail){
       if(data){
-        console.log(data);
-        setUser(data.getOne)
+        setUser(data.getOne);
+        // getToken(); 
       }
     }
   })
+
+// async function  getToken(){
+//     let result = await SecureStore.getItemAsync('userToken');
+//   }
 
   const pickImage = async () => {
     (async () => {
@@ -79,7 +84,8 @@ export default function ProfilScreen({navigation} : any) {
         <ImageBackground source={require('../assets/images/profilBG.png')} style={styles.imageBG}>
             <ScrollView >
                 <Avatar containerStyle={{ alignSelf: 'center'}} rounded source={{ uri : avatar}} size='xlarge'>
-                  <Avatar.Accessory style={{backgroundColor: "#f05454"}} size={36} onPress={() => refRBSheet.current?.open()}/>
+                  <Avatar.Accessory name='camera' 
+                    type='font-awesome-5' style={{backgroundColor: "#f05454"}} iconStyle={{fontSize: 20}} size={36} onPress={() => refRBSheet.current?.open()}/>
                 </Avatar>
                 <RBSheet
                   height={170}
@@ -108,35 +114,35 @@ export default function ProfilScreen({navigation} : any) {
                     </ListItem.Content>
                   </ListItem>
                 </RBSheet>
-                <Text style={styles.title}>{user ? user.firstName : 'Maxime'} {user ? user.lastName : 'BERTHOLD'} </Text>
+                <Text style={styles.title}>{user ? user.firstName : ''} {user ? user.lastName : ''} </Text>
                 <Text style={styles.promo}>L1 front React | Groupe 1</Text>
                 <Card containerStyle={styles.cardBox}>
                   <Card.Title style={styles.title}>Mes informations personnelles</Card.Title>
                   <Card.Divider />
                   <ListItem containerStyle={{ backgroundColor:'#233445' }}>
                     <Entypo name="mail" size={16} color="#f05454"/>
-                    <ListItem.Content><Text style={styles.whiteText}>{user ? user.email : 'm.bertold@schoolmehome.fr'}</Text></ListItem.Content> 
+                    <ListItem.Content><Text style={styles.whiteText}>{user ? user.email : ''}</Text></ListItem.Content> 
                   </ListItem>
                   <ListItem containerStyle={{ backgroundColor:'#233445' }}>
                     <FontAwesome name="phone" size={16} color="#f05454" />
-                    <ListItem.Content><Text style={styles.whiteText}>{user ? user.phone :'O1.O2.03.04.05'}</Text></ListItem.Content> 
+                    <ListItem.Content><Text style={styles.whiteText}>{user ? user.phone :''}</Text></ListItem.Content> 
                   </ListItem>
                   <ListItem containerStyle={{ backgroundColor:'#233445' }}>
                     <FontAwesome name="birthday-cake" size={16} color="#f05454" />
-                    <ListItem.Content><Text style={styles.whiteText}>{user ? user.birthdate :'1 janv 1990'}</Text></ListItem.Content> 
+                    <ListItem.Content><Text style={styles.whiteText}>{user ? user.birthdate :''}</Text></ListItem.Content> 
                   </ListItem>
                   <ListItem containerStyle={{ backgroundColor:'#233445' }}>
                     <Entypo name="location-pin" size={16} color="#f05454" />
                     <ListItem.Content><Text style={styles.whiteText}>
-                    {user ? user.street :'1 place des cerises'} {user ? user.zipcode : '99000'} {user ? user.city : 'JARDIN'} 
+                    {user ? user.street :'1 place des cerises'} {user ? user.zipcode : ''} {user ? user.city : ''} 
                     </Text></ListItem.Content> 
                   </ListItem>
                   <Icon 
-                    reverse
-                    reverseColor="#fff"
-                    name='pen' 
+                    iconStyle={{fontSize: 30}}
+                    containerStyle={{position: 'absolute', right: -15, top : -15}}
+                    name='plus-circle' 
                     type='font-awesome-5' 
-                    color="#f05454" 
+                    color="#f05454"
                     onPress={() => {
                       navigation.push('EditProfil')
                     }}/>
@@ -145,11 +151,42 @@ export default function ProfilScreen({navigation} : any) {
                 <Card containerStyle={styles.cardBox}>
                   <Card.Title style={styles.title}>Mes centres d'intérêts</Card.Title>
                   <Card.Divider/>
+                  <ListItem containerStyle={{ backgroundColor:'#233445' }}>
+                    <Image style={styles.img} source={require('../assets/images/videogames.png')} />
+                    <ListItem.Content><Text style={styles.whiteText}>Jeux vidéos</Text></ListItem.Content> 
+                  </ListItem>
+                  <ListItem containerStyle={{ backgroundColor:'#233445' }}>
+                    <Image style={styles.img} source={require('../assets/images/study.png')} />
+                    <ListItem.Content><Text style={styles.whiteText}>Lecture</Text></ListItem.Content> 
+                  </ListItem>
+                  <ListItem containerStyle={{ backgroundColor:'#233445' }}>
+                    <Image style={styles.img} source={require('../assets/images/puzzle-pieces.png')} />
+                    <ListItem.Content><Text style={styles.whiteText}>Puzzle</Text></ListItem.Content> 
+                  </ListItem>
                 </Card>
 
                 <Card containerStyle={styles.cardBox}>
                   <Card.Title style={styles.title}>Mes notes</Card.Title>
                   <Card.Divider/>
+                  <View style={styles.column}>
+                    <ListItem containerStyle={{ backgroundColor:'#233445' }} style={styles.item}>
+                      <Image style={styles.img} source={require('../assets/images/book.png')} />
+                      <ListItem.Content><Text style={styles.whiteText}>18 / 20</Text></ListItem.Content> 
+                    </ListItem>
+                    <ListItem containerStyle={{ backgroundColor:'#233445' }} style={styles.item}>
+                      <Image style={styles.img} source={require('../assets/images/ruler.png')} />
+                      <ListItem.Content><Text style={styles.whiteText}>17 / 20</Text></ListItem.Content> 
+                    </ListItem>
+                    <ListItem containerStyle={{ backgroundColor:'#233445' }} style={styles.item}>
+                      <Image style={styles.img} source={require('../assets/images/microscope.png')} />
+                      <ListItem.Content><Text style={styles.whiteText}>20 / 20</Text></ListItem.Content> 
+                    </ListItem>
+                    <ListItem containerStyle={{ backgroundColor:'#233445' }} style={styles.item}>
+                      <Image style={styles.img} source={require('../assets/images/flute.png')} />
+                      <ListItem.Content><Text style={styles.whiteText}>1 / 20</Text></ListItem.Content> 
+                    </ListItem>
+                  </View>
+                  
                 </Card>
             </ScrollView>
         </ImageBackground>
@@ -178,6 +215,7 @@ const styles = StyleSheet.create({
 
   title: {
     alignSelf: 'center',
+    padding: 1,
     fontSize: 20,
     fontWeight: 'bold',
     color: '#fff',
@@ -203,4 +241,17 @@ const styles = StyleSheet.create({
   mgBot : {
     marginBottom: 16,
   },
+  img : {
+    width : 30,
+    height : 30,
+  },
+  column : {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'flex-start'
+  },
+  item: {
+    width: '50%'
+  }
 });

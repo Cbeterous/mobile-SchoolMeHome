@@ -10,7 +10,7 @@ export type BottomTabParamList = {
   Profil: undefined;
   Slides: undefined;
   Login: undefined;
-  Calendar: undefined;
+  Calendrier: undefined;
 };
 
 
