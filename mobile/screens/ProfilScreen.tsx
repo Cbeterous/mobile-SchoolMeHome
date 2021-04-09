@@ -28,15 +28,14 @@ export default function ProfilScreen({navigation} : any) {
     if(userEmail){
       if(data){
         setUser(data.getOne);
-        getToken(); 
+        // getToken(); 
       }
     }
   })
 
-async function  getToken(){
-    let result = await SecureStore.getItemAsync('userToken');
-    console.log(result + " result");
-  }
+// async function  getToken(){
+//     let result = await SecureStore.getItemAsync('userToken');
+//   }
 
   const pickImage = async () => {
     (async () => {

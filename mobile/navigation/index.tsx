@@ -9,6 +9,7 @@ import NotFoundScreen from '../screens/NotFoundScreen';
 import { RootStackParamList } from '../types';
 import BottomTabNavigator from './BottomTabNavigator';
 import LinkingConfiguration from './LinkingConfiguration';
+import * as SecureStore from 'expo-secure-store';
 
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
@@ -29,7 +30,7 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
   const {userToken} = React.useContext(AuthContext);
-  
+  // const result = SecureStore.getItemAsync('userToken');
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {userToken === null ? (

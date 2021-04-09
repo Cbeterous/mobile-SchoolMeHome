@@ -33,19 +33,21 @@ function LoginComponent() {
   const [signin, {data, loading, error }] = useMutation(LOGIN);
   
   useEffect(() => {
+    console.log(data)
     if (loading) {console.log(loading)};
-        if (error) {console.log(JSON.stringify(error, null, 4))}
-      if (data) {
+    if (error) {console.log(error)}
+    if (data != undefined){
+      if (data.signin != null) {
         setUserEmail(data.signin.user.email);
         setUserToken(data.signin.token);
         SecureStore.setItemAsync('userToken', data.signin.token);
-      }
+      }else{
+        alert("L'adresse mail ou le mot de passe est incorrect !")
+    }
+    }
+
   }, [loading, error, data])
 
-  // async function  test(){
-  //   let result = await SecureStore.getItemAsync('userToken');
-  //   console.log(result + " result");
-  // }
   function tranformEmail(email:string) {
       email = email.toLowerCase();
       email = email.trim();
@@ -72,7 +74,8 @@ function LoginComponent() {
         <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       </View>
   );
-  }
+
+}
 
 
 const styles = StyleSheet.create({
